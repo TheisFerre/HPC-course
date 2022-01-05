@@ -1,6 +1,6 @@
 TARGET	= libmatmult.so
-LIBSRCS	= 
-LIBOBJS	=
+LIBSRCS	= matmult.c
+LIBOBJS	= matmult.o matrix.o
 
 OPT	= -g 
 PIC	= -fPIC
@@ -14,5 +14,10 @@ XLIBS	=
 $(TARGET): $(LIBOBJS)
 	$(CC) -o $@ $(SOFLAGS) $(LIBOBJS) $(XLIBS)
 
+
 clean:
 	@/bin/rm -f core core.* $(LIBOBJS) 
+# DO NOT DELETE
+
+matmult.o: matrix.h
+matrix.o: matrix.h

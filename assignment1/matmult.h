@@ -1,0 +1,1 @@
+void matmult_nat(int M, int N, int K, double **A, double **B, double **C);
