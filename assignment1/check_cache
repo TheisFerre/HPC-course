@@ -1,0 +1,10 @@
+#!/bin/bash
+#BSUB -J check_cache_output
+#BSUB -o check_cache_output%J.out
+#BSUB -e check_cache_output%J.err
+#BSUB -q hpcintro
+#BSUB -W 2
+#BSUB -R "rusage[mem=512MB]"
+#BSUB -R "select[model == XeonE5_2650v4]"
+
+lscpu
