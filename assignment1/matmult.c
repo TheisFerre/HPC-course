@@ -20,11 +20,6 @@ void matmult_nat(int M, int N, int K, double **A, double **B, double **C) {
 
 void matmult_lib(int M, int N, int K, double **A, double **B, double **C){
 
-    // Pointers to cblass
-    double * a_point = A[0];
-    double * b_point = B[0];
-    double * c_point = C[0];
-
     // first dimension of A
     int lda = M;
     // first dimension of B
@@ -33,12 +28,7 @@ void matmult_lib(int M, int N, int K, double **A, double **B, double **C){
     int ldc = M;
 
     // call cblas library
-    cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, M, N, K, 1.0, a_point, lda, b_point, ldb, 0.0, c_point, ldc);
-
-    // free memory
-    free(a_point);
-    free(b_point);
-    free(c_point);
+    cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, M, N, K, 1.0, *A, lda, *B, ldb, 0.0, *C, ldc);
 }
 
 void matmult_mkn(int M, int N, int K, double **A, double **B, double **C) {
