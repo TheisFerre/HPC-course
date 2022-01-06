@@ -37,6 +37,8 @@ perm_color_dict = {
 
 opt_options = []
 for f in os.listdir():
+    if "blk" in f:
+        continue
     if f.endswith(".dat"):
         opt = f.split("_")[1]
         if opt not in opt_options:
@@ -50,6 +52,8 @@ for opt in opt_options:
     y_max_new = 0
 
     for f in os.listdir():
+        if "blk" in f:
+            continue
         if f.endswith("dat") and opt in f:
             perm = f.split("_")[0]
 
@@ -69,7 +73,7 @@ for opt in opt_options:
     ax.text(x=np.log(30000), y=y_max_new, s="L3-cache")
     
 
-    ax.set_xlabel("Memory footprint")
+    ax.set_xlabel("log(Memory footprint)")
     ax.set_ylabel("Mflops/s")
     ax.set_xlim(0, 12)
     ax.set_ylim(0, None)
@@ -88,6 +92,7 @@ for opt in opt_options:
 
 
     ax.legend(ordering_handles, ordering_labels)
+    ax.set_title("Mflops/s vs. log(Memory footprint)")
     plt.tight_layout()
 
     plt.savefig(f"{opt}-MFLOPS-comparison.png")

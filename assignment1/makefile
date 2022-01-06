@@ -2,7 +2,7 @@ TARGET	= libmatmult.so
 LIBSRCS	= matmult.c
 LIBOBJS	= matmult.o matrix.o
 
-OPT	= -g -Ofast #-O3 -funroll-loops  #basic -g #Comparison1 -g -03 -funroll-loops #Comparison2 -g -03 CHIP = -march=broadwell #Comparison3
+OPT	= -g -Ofast -funroll-loops #-O3 -funroll-loops  #basic -g #Comparison1 -g -03 -funroll-loops #Comparison2 -g -03 CHIP = -march=broadwell #Comparison3
 PIC	= -fPIC
 
 ISA = -mavx2

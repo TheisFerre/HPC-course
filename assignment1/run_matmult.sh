@@ -21,12 +21,18 @@ echo ${CACHE_SIZE}
 
 CC=${1-"gcc"}
 
-NPARTS="10 15 20 35 50 75 100 150 200 300 500 750 1000 1400 1800 2000 2300"
-PERM="mkn mnk kmn knm nkm nmk"
+#NPARTS="10 15 20 35 50 75 100 150 200 300 500 750 1000 1400 1800 2000 2300"
+#PERM="mkn mnk kmn knm nkm nmk"
+
+## FOR CHECKING BLOCKS PERM NOW REFERS TO BLK SIZE
+NPARTS="2048"
+PERM="2 4 8 16 32 64 128 256 512 1024 2048"
+
+
 LOGEXT=$CC.dat
 
 # set to "OPT" if running with optimizations
-OPT=fast
+OPT=blk-fast-unroll
 
 # enable(1)/disable(0) result checking
 export MATMULT_COMPARE=0
@@ -36,7 +42,8 @@ do
 /bin/rm -f run_data/${perm}_${OPT}_matmult_c.$LOGEXT
 for size in $NPARTS
 do
-    ./matmult_c.${CC} $perm $size $size $size >> run_data/${perm}_${OPT}_matmult_c.$LOGEXT
+    ./matmult_c.${CC} blk $size $size $size $perm >> run_data/${perm}_${OPT}_matmult_c.$LOGEXT
+    #./matmult_c.${CC} $perm $size $size $size >> run_data/${perm}_${OPT}_matmult_c.$LOGEXT
 done
 done
 
