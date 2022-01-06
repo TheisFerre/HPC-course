@@ -160,3 +160,26 @@ void matmult_nmk(int M, int N, int K, double **A, double **B, double **C) {
     }
 }
 
+void matmult_blk(int M, int N, int K, double **A, double **B, double **C, int bs){
+    int kk,nn,n,k,m;
+    
+    for(m = 0; m < M; m++){
+        for(n = 0; n < N; n++){
+            C[m][n] = 0;
+        }
+    }
+
+/* Below implementation requires that the matrices are of NxN*/
+    for(kk=0;kk<N;kk+=bs){
+        for(nn=0;nn<K;nn+=bs){
+            for(m=0;m<N;m++){
+                for(k=nn;k<nn+bs;k++){
+                    for(n=kk;n<kk+bs;n++){
+                        C[m][n]+=A[m][k]*B[k][n];
+                    }
+                }
+            }
+        }
+    }
+
+}
