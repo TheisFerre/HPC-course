@@ -1,39 +1,7 @@
 Functions sorted by metric: Exclusive Total CPU Time
 
-Excl.     Incl.     Excl. L1    Excl. L1  Excl. L2  Excl. L2  Excl. L3   Excl. L3   Name
-Total     Total     D-cache     D-cache   Cache     Cache     Cache Hit  Cache
-CPU sec.  CPU sec.  Hits        Misses    Hits      Misses    w/o Snoop  Misses
-3.052     3.052     8934279678  57624496  52771988  1500576   1501085    0          <Total>
-2.612     2.612     7726271630  48011664  47968520        0         0    0          <static>@0x58a7ad (<libsatlas.so.3.10>)
-0.110     0.110      182305494         0         0        0         0    0          <static>@0x5b9204 (<libsatlas.so.3.10>)
-0.100     0.100      295635593   4806023         0        0         0    0          <static>@0x5d82d1 (<libsatlas.so.3.10>)
-0.070     0.070      417412532         0   4803468  1500576         0    0          <static>@0x5c4a2b (<libsatlas.so.3.10>)
-0.050     0.050              0         0         0        0   1501085    0          <static>@0x62dbda (<libsatlas.so.3.10>)
-0.030     0.030       65025336         0         0        0         0    0          ATL_dcol2blk_a1
-0.020     0.020              0         0         0        0         0    0          <static>@0x5b4168 (<libsatlas.so.3.10>)
-0.020     0.020      123838386         0         0        0         0    0          <static>@0x5c35f0 (<libsatlas.so.3.10>)
-0.020     0.020              0   4806809         0        0         0    0          ATL_dJIK0x0x40TN40x40x0_a1_bX
-0.010     0.010      123790707         0         0        0         0    0          ATL_dJIK0x0x20TN20x20x0_a1_bX
-0.010     0.010              0         0         0        0         0    0          munmap
-0.        0.020              0         0         0        0         0    0          ATL_dIBJBmm
-0.        0.140              0         0         0        0         0    0          ATL_dIBNBmm
-0.        0.090              0         0         0        0         0    0          ATL_dMBJBmm
-0.        3.042              0         0         0        0         0    0          ATL_dgemm
-0.        0.030              0         0         0        0         0    0          ATL_dgpKBmm
-0.        3.042              0         0         0        0         0    0          ATL_dmmJIK
-0.        2.992              0         0         0        0         0    0          ATL_dmmJIK2
-0.        0.130              0         0         0        0         0    0          ATL_dpKBmm
-0.        0.100              0         0         0        0         0    0          ATL_dpKBmm_b1
-0.        0.020              0         0         0        0         0    0          ATL_dpMBmm_b0
-0.        0.110              0         0         0        0         0    0          ATL_dpMBmm_b1
-0.        0.020              0         0         0        0         0    0          ATL_dpNBmm_b0
-0.        0.070              0         0         0        0         0    0          ATL_dpNBmm_b1
-0.        0.050              0         0         0        0         0    0          ATL_drow2blkT2_a1
-0.        3.052              0         0         0        0         0    0          __libc_start_main
-0.        3.042              0         0         0        0         0    0          cblas_dgemm
-0.        3.052              0         0         0        0         0    0          main
-0.        3.002              0         0         0        0         0    0          matmult_lib
-0.        0.040              0         0         0        0         0    0          matmult_ref
-0.        0.010              0         0         0        0         0    0          matrixfree
-0.        3.002              0         0         0        0         0    0          mflops
+Excl.     Incl.     Excl. L1  Excl. L1  Excl. L2  Excl. L2  Excl. L3   Excl. L3   Name
+Total     Total     D-cache   D-cache   Cache     Cache     Cache Hit  Cache
+CPU sec.  CPU sec.  Hits      Misses    Hits      Misses    w/o Snoop  Misses
+0.        0.        0         0         0         0         0          0          <Total>
 
