@@ -1,7 +1,27 @@
 Functions sorted by metric: Exclusive Total CPU Time
 
-Excl.     Incl.     Excl. L1    Excl. L1   Excl. L2   Excl. L2   Excl. L3   Excl. L3    Name
-Total     Total     D-cache     D-cache    Cache      Cache      Cache Hit  Cache
-CPU sec.  CPU sec.  Hits        Misses     Hits       Misses     w/o Snoop  Misses
-0.        0.        6262366036  826467404  182439198  643767595  389170615  252926484   <Total>
+Excl.     Incl.     Excl. L1    Excl. L1    Excl. L2   Excl. L2   Excl. L3   Excl. L3    Name
+Total     Total     D-cache     D-cache     Cache      Cache      Cache Hit  Cache
+CPU sec.  CPU sec.  Hits        Misses      Hits       Misses     w/o Snoop  Misses
+8.916     8.916     6923365992  1205799225  254468487  947264195  575343214  373038622   <Total>
+7.135     7.145     1981693256  1172167866  225701681  942760312  570838277  373038622   matmult_kmn
+1.701     1.701     4941672736    33631359   28766806    4503883    4504937          0   <static>@0x58a7ad (<libsatlas.so.3.10>)
+0.020     0.020              0           0          0          0          0          0   <static>@0x62dbda (<libsatlas.so.3.10>)
+0.020     0.020              0           0          0          0          0          0   init_matrix
+0.010     0.010              0           0          0          0          0          0   <static>@0x5b9204 (<libsatlas.so.3.10>)
+0.010     0.010              0           0          0          0          0          0   <static>@0x5d82d1 (<libsatlas.so.3.10>)
+0.010     0.010              0           0          0          0          0          0   __GI_memset
+0.010     0.010              0           0          0          0          0          0   compare_mat
+0.        0.010              0           0          0          0          0          0   ATL_dIBNBmm
+0.        1.741              0           0          0          0          0          0   ATL_dgemm
+0.        1.741              0           0          0          0          0          0   ATL_dmmJIK
+0.        1.721              0           0          0          0          0          0   ATL_dmmJIK2
+0.        0.010              0           0          0          0          0          0   ATL_dpKBmm
+0.        0.010              0           0          0          0          0          0   ATL_dpKBmm_b1
+0.        0.010              0           0          0          0          0          0   ATL_dpMBmm_b1
+0.        0.020              0           0          0          0          0          0   ATL_drow2blkT2_a1
+0.        1.771              0           0          0          0          0          0   __libc_start_main
+0.        1.741              0           0          0          0          0          0   cblas_dgemm
+0.        1.771              0           0          0          0          0          0   main
+0.        1.741              0           0          0          0          0          0   matmult_ref
 
