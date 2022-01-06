@@ -7,4 +7,4 @@
 #BSUB -R "rusage[mem=512MB]"
 #BSUB -R "select[model == XeonE5_2650v4]"
 
-gcc -march=native -Q --help=target|grep march
+cat /sys/devices/cpu/caps/pmu_name
