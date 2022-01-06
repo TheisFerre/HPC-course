@@ -1,18 +1,42 @@
-#!/bin/sh
+#!/bin/bash
+#BSUB -J mm_batch
+#BSUB -o mm_batch_%J.out
+#BSUB -e mm_batch_%J.err
+#BSUB -q hpcintro
+#BSUB -n 1
+#BSUB -R "rusage[mem=8096]"
+#BSUB -W 60
+#BSUB -N
+# uncomment the following line, if you want to assure that your job has
+# a whole CPU for itself (shared L3 cache)
+#BSUB -R "span[hosts=1] affinity[socket(1)]"
+
+# LOAD OPENBLAS
+#module load openblas
+
+# Check cache
+echo "checking CPU info"
+CACHE_SIZE=$(lscpu)
+echo ${CACHE_SIZE}
 
 CC=${1-"gcc"}
 
-NPARTS = "10 200 500 1000 2000 3000 4000 5000 7500 10000 20000"
-PERM="nat lib mkn mnk kmn knm nkm nmk"
+NPARTS="10 200 500 750 1000 1400 1800 2000 2300 2600 3000"
+PERM="mkn mnk kmn knm nkm nmk"
 LOGEXT=$CC.dat
 
-/bin/rm -f matmult_c.$LOGEXT
+# set to "OPT" if running with optimizations
+OPT=CHIP
+
+# enable(1)/disable(0) result checking
+export MATMULT_COMPARE=0
 
 for perm in $PERM
 do
+/bin/rm -f run_data/${perm}_${OPT}_matmult_c.$LOGEXT
 for size in $NPARTS
 do
-    ./matmult_c.${CC} $perm $size $size $size >> matmult_c.$LOGEXT
+    ./matmult_c.${CC} $perm $size $size $size >> run_data/${perm}_${OPT}_matmult_c.$LOGEXT
 done
 done
 

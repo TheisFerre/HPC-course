@@ -2,11 +2,14 @@ TARGET	= libmatmult.so
 LIBSRCS	= matmult.c
 LIBOBJS	= matmult.o matrix.o
 
-OPT	= -g -O3
+OPT	= -g -O3  #basic -g -03 #Comparison1 -g -03 -funroll-loops #Comparison2 -g -03 CHIP = -march=broadwell #Comparison3
 PIC	= -fPIC
 
+ISA = -mavx2
+CHIP = "-march=broadwell"
+
 CC	= gcc
-CFLAGS= $(OPT) $(PIC) $(XOPTS)
+CFLAGS= $(OPT) $(PIC) $(XOPTS) $(ISA) $(CHIP)
 
 SOFLAGS = -shared 
 XLIBS	= 
