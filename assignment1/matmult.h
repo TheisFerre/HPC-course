@@ -13,3 +13,5 @@ void matmult_knm(int M, int N, int K, double **A, double **B, double **C);
 void matmult_nkm(int M, int N, int K, double **A, double **B, double **C);
 
 void matmult_nmk(int M, int N, int K, double **A, double **B, double **C);
+
+void matmult_blk(int M, int N, int K, double **A, double **B, double **C);
