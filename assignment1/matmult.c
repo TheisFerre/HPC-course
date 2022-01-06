@@ -169,11 +169,21 @@ void matmult_blk(int M, int N, int K, double **A, double **B, double **C, int bs
         }
     }
 
-/* Below implementation requires that the matrices are of NxN*/
+    /* Below implementation requires that the matrices are of NxN*/
+
+    // A (M X K)
+    // B (K X N)
+    // C (M X N)
+
+    // row block (A)
     for(kk=0;kk<N;kk+=bs){
+
         for(nn=0;nn<K;nn+=bs){
+        
             for(m=0;m<N;m++){
+        
                 for(k=nn;k<nn+bs;k++){
+        
                     for(n=kk;n<kk+bs;n++){
                         C[m][n]+=A[m][k]*B[k][n];
                     }

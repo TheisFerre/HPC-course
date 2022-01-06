@@ -25,6 +25,10 @@ ax.text(x=np.log(32), y=max(data["Mflop/s"]) * (1/3), s="L1-cache", c="black")
 ax.axvline(x=np.log(256), ymin=0, ymax=1, color = 'black', linestyle="--")
 ax.text(x=np.log(256), y=max(data["Mflop/s"]) * (2/3), s="L2-cache")
 
+ax.axvline(x=np.log(30000), ymin=0, ymax=1, color = 'black', linestyle="--")
+ax.text(x=np.log(30000), y=max(data["Mflop/s"]), s="L3-cache")
+    
+
 ax.set_xlabel("log(blocksize)")
 ax.set_ylabel("Mflops/s")
 ax.set_ylim(0, None)
