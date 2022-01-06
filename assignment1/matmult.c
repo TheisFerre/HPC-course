@@ -4,6 +4,13 @@
 #include <cblas.h>
 #include "matrix.h"
 
+int min(int x, int y){
+    return (((x) < (y)) ? (x) : (y));
+}
+
+// #define max(x, y) (((x) > (y)) ? (x) : (y))
+// #define min(x, y) (((x) < (y)) ? (x) : (y))
+
 void matmult_nat(int M, int N, int K, double **A, double **B, double **C) {
 
     int m, n, k;
@@ -176,17 +183,39 @@ void matmult_blk(int M, int N, int K, double **A, double **B, double **C, int bs
     // C (M X N)
 
     // Triple for loop for calculation (mkn)
-    for (m0 = 1; m0 = M; m + bs)
+        // row block (A)
+    // for(kk=0;kk<N;kk+=bs){
+
+    //     for(nn=0;nn<K;nn+=bs){
+        
+    //         for(m=0;m<N;m++){
+        
+    //             for(k=nn;k<nn+bs;k++){
+        
+    //                 for(n=kk;n<kk+bs;n++){
+    //                     C[m][n]+=A[m][k]*B[k][n];
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+
+    int m0, k0, n0, i;
+    // for (i=0; i<10; i++){
+    //     n = min(i, 5);
+    //     printf("%d\n", n);
+    // }
+    for (m0 = 0; m0 < M; m0 += bs)
     {
-        for (k0 = 1; k0 = K; k + bs)
+        for (k0 = 0; k0 < K; k0 += bs)
         {
-            for (n0 = 1; n0 = N; n + bs)
+            for (n0 = 0; n0 < N; n0 += bs)
             {
-                for (m = 0; m = min(m0 + bs - 1,M); m++)
+                for (m = m0; m < min(m0 + bs,M); m++)
                 {
-                    for (k = 0; k = min(k0 + bs - 1,K); k++)
+                    for (k = k0; k < min(k0 + bs,K); k++)
                     {
-                        for (n = 0; n = min(n0 + bs - 1,N); n++)
+                        for (n = n0; n < min(n0 + bs,N); n++)
                         {
                             C[m][n] += A[m][k] * B[k][n];
                         }
@@ -196,21 +225,3 @@ void matmult_blk(int M, int N, int K, double **A, double **B, double **C, int bs
         }
     }
 }
-
-    // row block (A)
-//     for(kk=0;kk<N;kk+=bs){
-
-//         for(nn=0;nn<K;nn+=bs){
-        
-//             for(m=0;m<N;m++){
-        
-//                 for(k=nn;k<nn+bs;k++){
-        
-//                     for(n=kk;n<kk+bs;n++){
-//                         C[m][n]+=A[m][k]*B[k][n];
-//                     }
-//                 }
-//             }
-//         }
-//     }
-// }
