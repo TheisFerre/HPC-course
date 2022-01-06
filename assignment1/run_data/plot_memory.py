@@ -13,8 +13,9 @@ def add_data_plot(perm, opt, ax):
     ]
 
     #MFLOPS
+    y_max = np.max(max(data["Mflop/s"]))
     ax.plot(np.log(data["memory footprint in kB"]), data["Mflop/s"], c=perm_color_dict[perm], marker="*", label=f"{perm}-{opt}")
-    return ax
+    return ax, y_max
 
 legend_order = [
     "mkn",
@@ -45,26 +46,33 @@ for f in os.listdir():
 for opt in opt_options:
 
     fig, ax = plt.subplots()
+    y_max = 0
+    y_max_new = 0
 
     for f in os.listdir():
         if f.endswith("dat") and opt in f:
             perm = f.split("_")[0]
 
-            ax = add_data_plot(perm, opt, ax)
+            ax, y_max_new = add_data_plot(perm, opt, ax)
+
+            if y_max_new > y_max:
+                y_max = y_max_new
 
             #plt.yscale("log")
-    ax.vlines(x=np.log(32), ymin=0, ymax=6000, color = 'black', linestyle="--")
-    ax.text(x=np.log(32), y=2000, s="L1-cache")
+    ax.axvline(x=np.log(32), ymin=0, ymax=1, color = 'black', linestyle="--")
+    ax.text(x=np.log(32), y=y_max_new * (1/3), s="L1-cache", c="black")
 
-    ax.vlines(x=np.log(256), ymin=0, ymax=6000, color = 'black', linestyle="--")
-    ax.text(x=np.log(256), y=4800, s="L2-cache")
+    ax.axvline(x=np.log(256), ymin=0, ymax=1, color = 'black', linestyle="--")
+    ax.text(x=np.log(256), y=y_max_new * (2/3), s="L2-cache")
     
-    ax.vlines(x=np.log(30000), ymin=0, ymax=6000, color = 'black', linestyle="--")
-    ax.text(x=np.log(30000), y=6500, s="L3-cache")
+    ax.axvline(x=np.log(30000), ymin=0, ymax=1, color = 'black', linestyle="--")
+    ax.text(x=np.log(30000), y=y_max_new, s="L3-cache")
     
 
     ax.set_xlabel("Memory footprint")
     ax.set_ylabel("Mflops/s")
+    ax.set_xlim(0, 12)
+    ax.set_ylim(0, None)
     ax.set_xticklabels(ax.get_xticks(), rotation = 90)
 
     handles, labels = plt.gca().get_legend_handles_labels()

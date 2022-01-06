@@ -16,17 +16,17 @@
 
 # Check cache
 echo "checking CPU info"
-CACHE_SIZE=$(lscpu)
+CACHE_SIZE=$(lscpu) 
 echo ${CACHE_SIZE}
 
 CC=${1-"gcc"}
 
-NPARTS="10 15 20 35 50 75 100 150 200 300 500 750 1000 1400 1800 2000 2300 2600 3000"
+NPARTS="10 15 20 35 50 75 100 150 200 300 500 750 1000 1400 1800 2000 2300"
 PERM="mkn mnk kmn knm nkm nmk"
 LOGEXT=$CC.dat
 
 # set to "OPT" if running with optimizations
-OPT=funroll
+OPT=fast
 
 # enable(1)/disable(0) result checking
 export MATMULT_COMPARE=0
