@@ -175,21 +175,42 @@ void matmult_blk(int M, int N, int K, double **A, double **B, double **C, int bs
     // B (K X N)
     // C (M X N)
 
-    // row block (A)
-    for(kk=0;kk<N;kk+=bs){
-
-        for(nn=0;nn<K;nn+=bs){
-        
-            for(m=0;m<N;m++){
-        
-                for(k=nn;k<nn+bs;k++){
-        
-                    for(n=kk;n<kk+bs;n++){
-                        C[m][n]+=A[m][k]*B[k][n];
+    // Triple for loop for calculation (mkn)
+    for (m0 = 1; m0 = M; m + bs)
+    {
+        for (k0 = 1; k0 = K; k + bs)
+        {
+            for (n0 = 1; n0 = N; n + bs)
+            {
+                for (m = 0; m = min(m0 + bs - 1,M); m++)
+                {
+                    for (k = 0; k = min(k0 + bs - 1,K); k++)
+                    {
+                        for (n = 0; n = min(n0 + bs - 1,N); n++)
+                        {
+                            C[m][n] += A[m][k] * B[k][n];
+                        }
                     }
                 }
             }
         }
     }
-
 }
+
+    // row block (A)
+//     for(kk=0;kk<N;kk+=bs){
+
+//         for(nn=0;nn<K;nn+=bs){
+        
+//             for(m=0;m<N;m++){
+        
+//                 for(k=nn;k<nn+bs;k++){
+        
+//                     for(n=kk;n<kk+bs;n++){
+//                         C[m][n]+=A[m][k]*B[k][n];
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }
