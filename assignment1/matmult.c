@@ -200,7 +200,7 @@ void matmult_blk(int M, int N, int K, double **A, double **B, double **C, int bs
     //     }
     // }
 
-    int m0, k0, n0, i;
+    int m0, k0, n0;
     // for (i=0; i<10; i++){
     //     n = min(i, 5);
     //     printf("%d\n", n);
