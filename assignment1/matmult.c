@@ -7,6 +7,12 @@
 void matmult_nat(int M, int N, int K, double **A, double **B, double **C) {
 
     int m, n, k;
+
+    for(m = 0; m < M; m++){
+        for(n = 0; n < N; n++){
+            C[m][n] = 0;
+        }
+    }
     
     //Triple for loop for calculation (mkn)
     for(m = 0; m < M; m++){
@@ -34,6 +40,12 @@ void matmult_lib(int M, int N, int K, double **A, double **B, double **C){
 void matmult_mkn(int M, int N, int K, double **A, double **B, double **C) {
 
     int m, n, k;
+
+    for(m = 0; m < M; m++){
+        for(n = 0; n < N; n++){
+            C[m][n] = 0;
+        }
+    }
     
     //Triple for loop for calculation (mkn)
     for(m = 0; m < M; m++){
@@ -48,6 +60,12 @@ void matmult_mkn(int M, int N, int K, double **A, double **B, double **C) {
 void matmult_mnk(int M, int N, int K, double **A, double **B, double **C) {
 
     int m, n, k;
+
+    for(m = 0; m < M; m++){
+        for(n = 0; n < N; n++){
+            C[m][n] = 0;
+        }
+    }
     
     //Triple for loop for calculation (mnk)
     for(m = 0; m < M; m++){
@@ -63,6 +81,12 @@ void matmult_mnk(int M, int N, int K, double **A, double **B, double **C) {
 void matmult_kmn(int M, int N, int K, double **A, double **B, double **C) {
 
     int m, n, k;
+
+    for(m = 0; m < M; m++){
+        for(n = 0; n < N; n++){
+            C[m][n] = 0;
+        }
+    }
     
     //Triple for loop for calculation (kmn)
     for(k = 0; k < K; k++){
@@ -78,6 +102,12 @@ void matmult_kmn(int M, int N, int K, double **A, double **B, double **C) {
 void matmult_knm(int M, int N, int K, double **A, double **B, double **C) {
 
     int m, n, k;
+
+    for(m = 0; m < M; m++){
+        for(n = 0; n < N; n++){
+            C[m][n] = 0;
+        }
+    }
     
     //Triple for loop for calculation (knm)
     for(k = 0; k < K; k++){
@@ -92,6 +122,12 @@ void matmult_knm(int M, int N, int K, double **A, double **B, double **C) {
 void matmult_nkm(int M, int N, int K, double **A, double **B, double **C) {
 
     int m, n, k;
+
+    for(m = 0; m < M; m++){
+        for(n = 0; n < N; n++){
+            C[m][n] = 0;
+        }
+    }
     
     //Triple for loop for calculation (nkm)
     for(n = 0; n < N; n++){
@@ -107,6 +143,12 @@ void matmult_nkm(int M, int N, int K, double **A, double **B, double **C) {
 void matmult_nmk(int M, int N, int K, double **A, double **B, double **C) {
 
     int m, n, k;
+
+    for(m = 0; m < M; m++){
+        for(n = 0; n < N; n++){
+            C[m][n] = 0;
+        }
+    }
     
     //Triple for loop for calculation (nmk)
     for(n = 0; n < N; n++){

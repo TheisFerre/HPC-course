@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 import os
 
 def add_data_plot(perm, opt, ax):
@@ -12,7 +13,7 @@ def add_data_plot(perm, opt, ax):
     ]
 
     #MFLOPS
-    ax.plot(data["memory footprint in kB"], data["Mflop/s"], c=perm_color_dict[perm], marker="*", label=f"{perm}-{opt}")
+    ax.plot(np.log(data["memory footprint in kB"]), data["Mflop/s"], c=perm_color_dict[perm], marker="*", label=f"{perm}-{opt}")
     return ax
 
 legend_order = [
@@ -52,11 +53,15 @@ for opt in opt_options:
             ax = add_data_plot(perm, opt, ax)
 
             #plt.yscale("log")
-    """ax.vlines(x=12 * 32, ymin=0, ymax=1, color = 'b', linestyle="--")
-    ax.text(x=12 * 32, y=2000, s="L1-cache")
+    ax.vlines(x=np.log(32), ymin=0, ymax=6000, color = 'black', linestyle="--")
+    ax.text(x=np.log(32), y=2000, s="L1-cache")
 
-    ax.vlines(x=12 * 256, ymin=0, ymax=1, color = 'b', linestyle="--")
-    ax.text(x=12 * 256, y=2000, s="L2-cache")"""
+    ax.vlines(x=np.log(256), ymin=0, ymax=6000, color = 'black', linestyle="--")
+    ax.text(x=np.log(256), y=4800, s="L2-cache")
+    
+    ax.vlines(x=np.log(30000), ymin=0, ymax=6000, color = 'black', linestyle="--")
+    ax.text(x=np.log(30000), y=6500, s="L3-cache")
+    
 
     ax.set_xlabel("Memory footprint")
     ax.set_ylabel("Mflops/s")
