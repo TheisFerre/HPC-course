@@ -4,12 +4,7 @@
 #include <cblas.h>
 #include "matrix.h"
 
-int min(int x, int y){
-    return (((x) < (y)) ? (x) : (y));
-}
-
-// #define max(x, y) (((x) > (y)) ? (x) : (y))
-// #define min(x, y) (((x) < (y)) ? (x) : (y))
+#define min(x,y) (((x) < (y)) ? (x) : (y))
 
 void matmult_nat(int M, int N, int K, double **A, double **B, double **C) {
 
