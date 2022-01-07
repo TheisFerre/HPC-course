@@ -179,9 +179,9 @@ void matmult_blk(int M, int N, int K, double **A, double **B, double **C, int bs
 
     // Triple for loop for calculation (mkn)
         // row block (A)
-    // for(kk=0;kk<N;kk+=bs){
+    // for(kk=0;kk<K;kk+=bs){
 
-    //     for(nn=0;nn<K;nn+=bs){
+    //     for(nn=0;nn<N;nn+=bs){
         
     //         for(m=0;m<N;m++){
         
@@ -201,16 +201,16 @@ void matmult_blk(int M, int N, int K, double **A, double **B, double **C, int bs
     //     printf("%d\n", n);
     // }
     for (m0 = 0; m0 < M; m0 += bs)
-    {
+    { int minm0=min(m0 + bs,M);
         for (k0 = 0; k0 < K; k0 += bs)
-        {
+        { int mink0=min(k0 + bs,K);
             for (n0 = 0; n0 < N; n0 += bs)
-            {
-                for (m = m0; m < min(m0 + bs,M); m++)
+            {  int minn0=min(n0 + bs,N);
+                for (m = m0; m < minm0; m++)
                 {
-                    for (k = k0; k < min(k0 + bs,K); k++)
+                    for (k = k0; k < mink0; k++)
                     {
-                        for (n = n0; n < min(n0 + bs,N); n++)
+                        for (n = n0; n <minn0; n++)
                         {
                             C[m][n] += A[m][k] * B[k][n];
                         }
