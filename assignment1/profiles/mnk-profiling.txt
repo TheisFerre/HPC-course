@@ -1,31 +1,18 @@
 Functions sorted by metric: Exclusive Total CPU Time
 
-Excl.     Incl.     Excl. L1     Excl. L1    Excl. L2   Excl. L2    Excl. L3   Excl. L3     Name
-Total     Total     D-cache      D-cache     Cache      Cache       Cache Hit  Cache
-CPU sec.  CPU sec.  Hits         Misses      Hits       Misses      w/o Snoop  Misses
-59.862    59.862    21082284516  2410716765  494569618  1913031568  870933192  1042181920   <Total>
-58.151    58.161    16157450709  2377102080  465764099  1908528666  866428948  1042031948   matmult_mnk
- 1.601     1.601     4859514554    33614685   28805519     1500957    3005692           0   <static>@0x58a7ad (<libsatlas.so.3.10>)
- 0.030     0.030       65319253           0          0     1499789          0           0   <static>@0x5c4a2b (<libsatlas.so.3.10>)
- 0.020     0.020              0           0          0     1502156          0           0   <static>@0x5d82d1 (<libsatlas.so.3.10>)
- 0.020     0.020              0           0          0           0          0           0   init_matrix
- 0.010     0.010              0           0          0           0          0           0   <static>@0x5b9204 (<libsatlas.so.3.10>)
- 0.010     0.010              0           0          0           0    1498552      149972   <static>@0x62dbda (<libsatlas.so.3.10>)
- 0.010     0.010              0           0          0           0          0           0   ATL_dcol2blk_a1
- 0.010     0.010              0           0          0           0          0           0   __GI_memset
- 0.        0.010              0           0          0           0          0           0   ATL_dIBNBmm
- 0.        0.030              0           0          0           0          0           0   ATL_dMBJBmm
- 0.        1.681              0           0          0           0          0           0   ATL_dgemm
- 0.        1.681              0           0          0           0          0           0   ATL_dmmJIK
- 0.        1.671              0           0          0           0          0           0   ATL_dmmJIK2
- 0.        0.020              0           0          0           0          0           0   ATL_dpKBmm
- 0.        0.020              0           0          0           0          0           0   ATL_dpKBmm_b1
- 0.        0.010              0           0          0           0          0           0   ATL_dpMBmm_b1
- 0.        0.030              0           0          0           0          0           0   ATL_dpNBmm_b1
- 0.        0.010              0           0          0           0          0           0   ATL_drow2blkT2_a1
- 0.       59.862              0           0          0           0          0           0   __libc_start_main
- 0.        1.681              0           0          0           0          0           0   cblas_dgemm
- 0.       59.862              0           0          0           0          0           0   main
- 0.        1.681              0           0          0           0          0           0   matmult_ref
- 0.       58.161              0           0          0           0          0           0   mflops
+Excl.     Incl.     Excl. L1     Excl. L1     Excl. L2     Excl. L2     Excl. L3     Excl. L3    Name
+Total     Total     D-cache      D-cache      Cache Hits   Cache        Cache Hits   Cache
+CPU sec.  CPU sec.  Hits         Misses                    Misses                    Misses
+123.406   123.406   48489253206  38038596445  12499470632  25544053453  24662047741  880090176   <Total>
+123.346   123.376   48489253206  38038596445  12499470632  25544053453  24662047741  880090176   matmult_mnk
+  0.030     0.030             0            0            0            0            0          0   __GI_memset
+  0.010     0.010             0            0            0            0            0          0   __read_nocancel
+  0.010     0.010             0            0            0            0            0          0   getrusage
+  0.010     0.010             0            0            0            0            0          0   init_matrix
+  0.        0.010             0            0            0            0            0          0   <static>@0x2d009 (<libcollector.so>)
+  0.      123.406             0            0            0            0            0          0   __libc_start_main
+  0.        0.010             0            0            0            0            0          0   dlclose
+  0.        0.010             0            0            0            0            0          0   init_timer
+  0.      123.406             0            0            0            0            0          0   main
+  0.      123.396             0            0            0            0            0          0   mflops
 

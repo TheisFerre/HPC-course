@@ -1,25 +1,13 @@
 Functions sorted by metric: Exclusive Total CPU Time
 
-Excl.     Incl.     Excl. L1     Excl. L1     Excl. L2   Excl. L2     Excl. L3    Excl. L3     Name
-Total     Total     D-cache      D-cache      Cache      Cache        Cache Hit   Cache
-CPU sec.  CPU sec.  Hits         Misses       Hits       Misses       w/o Snoop   Misses
-152.206   152.206   30213555186  13541226775  360113432  13168072754  3704229283  9466088060   <Total>
-150.495   150.505   25286934765  13507597940  331307909  13163569029  3699730642  9466088060   matmult_knm
-  1.621     1.621    4926620421     33628835   28805523      4503725     4498641           0   <static>@0x58a7ad (<libsatlas.so.3.10>)
-  0.030     0.030             0            0          0            0           0           0   <static>@0x62dbda (<libsatlas.so.3.10>)
-  0.030     0.030             0            0          0            0           0           0   init_matrix
-  0.010     0.010             0            0          0            0           0           0   <static>@0x5d82d1 (<libsatlas.so.3.10>)
-  0.010     0.010             0            0          0            0           0           0   ATL_dcol2blk_a1
-  0.010     0.010             0            0          0            0           0           0   __GI_memset
-  0.        1.671             0            0          0            0           0           0   ATL_dgemm
-  0.        1.671             0            0          0            0           0           0   ATL_dmmJIK
-  0.        1.641             0            0          0            0           0           0   ATL_dmmJIK2
-  0.        0.010             0            0          0            0           0           0   ATL_dpKBmm
-  0.        0.010             0            0          0            0           0           0   ATL_dpKBmm_b1
-  0.        0.030             0            0          0            0           0           0   ATL_drow2blkT2_a1
-  0.      152.206             0            0          0            0           0           0   __libc_start_main
-  0.        1.671             0            0          0            0           0           0   cblas_dgemm
-  0.      152.206             0            0          0            0           0           0   main
-  0.        1.671             0            0          0            0           0           0   matmult_ref
-  0.      150.505             0            0          0            0           0           0   mflops
+Excl.     Incl.     Excl. L1     Excl. L1     Excl. L2     Excl. L2     Excl. L3     Excl. L3     Name
+Total     Total     D-cache      D-cache      Cache Hits   Cache        Cache Hits   Cache
+CPU sec.  CPU sec.  Hits         Misses                    Misses                    Misses
+258.071   258.071   84008410144  74616464325  15029179793  59593818161  58137966313  1457939250   <Total>
+258.020   258.061   84008410144  74616464325  15029179793  59593818161  58137966313  1457939250   matmult_knm
+  0.040     0.040             0            0            0            0            0           0   __GI_memset
+  0.010     0.010             0            0            0            0            0           0   init_matrix
+  0.      258.071             0            0            0            0            0           0   __libc_start_main
+  0.      258.071             0            0            0            0            0           0   main
+  0.      258.061             0            0            0            0            0           0   mflops
 

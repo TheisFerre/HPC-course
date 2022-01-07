@@ -27,7 +27,7 @@ EXECUTABLE=matmult_c.gcc
 
 # define the mkn values in the MKN variable
 #
-MKN="2048 2048 2048"
+MKN="2000 2000 2000"
 
 # define the permutation type in PERM
 #
@@ -41,7 +41,7 @@ PERM="mkn mnk kmn knm nkm nmk lib"
 # on the command line, i.e. "MFLOPS_MAX_IT=10 ./matmult_...." for the
 # problem size you want to analyze.
 #
-export MFLOPS_MAX_IT=1000
+export MFLOPS_MAX_IT=5
 export MATMULT_COMPARE=0
 
 # experiment name 
@@ -64,7 +64,7 @@ do
     er_print -func new-$perm-run.er/ > $perm-profiling.txt
     mv $perm-profiling.txt profiles/$perm-profiling.txt
 done
-collect -o new-blk-run.er $HWCOUNT ./$EXECUTABLE blk $MKN
+collect -o new-blk-run.er $HWCOUNT ./$EXECUTABLE blk $MKN 128
 er_print -func new-blk-run.er/ > blk-profiling.txt
 mv blk-profiling.txt profiles/blk-profiling.txt
 
