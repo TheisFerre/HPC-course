@@ -54,3 +54,6 @@ dkms.conf
 *.err
 *.out
 *.er
+
+# python stuff
+venv
