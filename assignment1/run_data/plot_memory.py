@@ -77,7 +77,10 @@ for opt in opt_options:
     ax.set_ylabel("Mflops/s")
     ax.set_xlim(0, 12)
     ax.set_ylim(0, None)
-    ax.set_xticklabels(ax.get_xticks(), rotation = 90)
+    x_dat = plt.gca().get_lines()[0].get_xdata()
+    ax.set_xticklabels([int(dat) for dat in np.exp(x_dat)], rotation = 90, fontsize="8")
+    ax.set_xticks(x_dat)
+    
 
     handles, labels = plt.gca().get_legend_handles_labels()
 
