@@ -54,10 +54,7 @@ dkms.conf
 *.err
 *.out
 *.er
-<<<<<<< HEAD
 *.bak
-=======
 
 # python stuff
 venv
->>>>>>> 38e12e98db4e1ad5d6a9db1524262b8bf99b805a
