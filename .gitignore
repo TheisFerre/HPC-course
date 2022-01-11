@@ -54,3 +54,4 @@ dkms.conf
 *.err
 *.out
 *.er
+*.bak
