@@ -14,12 +14,12 @@ OBJS_GS	= $(MAIN_GS) gauss_seidel.o
 #
 CC	= gcc
 DEFS	= 
-OPT	= -g 
+OPT	= -g
 IPO	= 
 ISA	= 
 CHIP	= 
 ARCH	= 
-PARA	= 
+PARA	= -fopenmp -ffast-math
 CFLAGS	= $(DEFS) $(ARCH) $(OPT) $(ISA) $(CHIP) $(IPO) $(PARA) $(XOPTS)
 LDFLAGS = -lm 
 
