@@ -99,7 +99,7 @@ main(int argc, char *argv[]) {
     }
             
     /* initialize f */
-    float delta;
+    double delta;
     delta = 2.0/(N + 1.0);
     for(int z=0;z<N+2;z++){
         for(int y=0;y<N+2;y++){
