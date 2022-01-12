@@ -55,7 +55,7 @@ jacobi(int N, int iter_max, double tolerance, double ***u_new, double***f) {
         }
 
         // FLOPS 10 * N * N * N
-        #pragma omp parallel for private(z, y, x)
+        #pragma omp parallel for private(z, y, x) shared(delta, f, u_old)
         for(z=1;z<N+1;z++){
             for(y=1;y<N+1;y++){
                 for(x=1;x<N+1;x++){
