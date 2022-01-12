@@ -70,7 +70,7 @@ main(int argc, char *argv[]) {
             u[N+1][y][x]=20;
         }
     }
-            
+
     /* Wall (y,z) */
     for(int z=0;z<N+2;z++){
         for(int y=0;y<N+2;y++){
@@ -104,7 +104,7 @@ main(int argc, char *argv[]) {
     for(int z=0;z<N+2;z++){
         for(int y=0;y<N+2;y++){
             for(int x=0;x<N+2;x++){
-                if (-1 + delta * x <= -2/8 && -1 + delta * y <= -1/2 && -1 + delta * z >= -2/3 && -1 + delta * z <= 0) {
+                if (-1 + delta * x <= -2.0/8 && -1.0 + delta * y <= -1.0/2.0 && -1 + delta * z >= -2.0/3.0 && -1.0 + delta * z <= 0) {
                     f[z][y][x] = 200;
                 }
                 else{
@@ -123,6 +123,10 @@ main(int argc, char *argv[]) {
     #ifdef _JACOBI
     jacobi(N, iter_max, tolerance, u, f);
     #endif
+
+    #ifdef _GAUSS_SEIDEL
+    gauss_seidel(N, iter_max, tolerance, u, f);
+    #endif
     
 
 
@@ -140,15 +144,15 @@ main(int argc, char *argv[]) {
 	    break;
 	case 3:
 	    output_ext = ".bin";
-	    sprintf(output_filename, "%s_%d%s", output_prefix, N, output_ext);
+	    sprintf(output_filename, "%s_%d%s", output_prefix, N+2, output_ext);
 	    fprintf(stderr, "Write binary dump to %s: ", output_filename);
-	    print_binary(output_filename, N, u);
+	    print_binary(output_filename, N+2, u);
 	    break;
 	case 4:
 	    output_ext = ".vtk";
-	    sprintf(output_filename, "%s_%d%s", output_prefix, N, output_ext);
+	    sprintf(output_filename, "%s_%d%s", output_prefix, N+2, output_ext);
 	    fprintf(stderr, "Write VTK file to %s: ", output_filename);
-	    print_vtk(output_filename, N, u);
+	    print_vtk(output_filename, N+2, u);
 	    break;
 	default:
 	    fprintf(stderr, "Non-supported output type!\n");
