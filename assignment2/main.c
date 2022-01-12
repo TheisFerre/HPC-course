@@ -62,26 +62,35 @@ main(int argc, char *argv[]) {
     for(int y=0;y<N+2;y++)
         for(int x=0;x<N+2;x++)
             U[0][y][x]=20   
-
     for(int y=0;y<N+2;y++)
         for(int x=0;x<N+2;x++)
-            U[N+2][y][x]=0  
-    
+            U[N+1][y][x]=20  
     /* Wall (y,z) */
     for(int z=0;z<N+2;z++)
         for(int y=0;y<N+2;y++)
             U[z][y][0]=20  
     for(int z=0;z<N+2;z++)
         for(int y=0;y<N+2;y++)
-            U[z][y][N+2]=20  
+            U[z][y][N+1]=20  
     /* Wall (x,z) */
     for(int z=0;z<N+2;z++)
         for(int x=0;x<N+2;x++)
-            U[z][0][x]=20
+            U[z][0][x]=0
     for(int z=0;z<N+2;z++)
         for(int x=0;x<N+2;x++)
-            U[z][0][N+2]=20
-    
+            U[z][N+1][x]=20
+    /* initialize f */
+    double delta;
+    delta = 2/(N + 1);
+    for(int z=0;z<N+2;z++)
+        for(int y=0;y<N+2;y++)
+            for(int x=0;x<N+2;x++)
+                if (-1 + delta * x <= -2/8 && -1 + delta * y <= -1/2 && -1 + delta * z >= -2/3 && -1 + delta * z <= 0 && ){
+                    f[z][y][x] = 200
+                }
+                else{
+                    f[z][y][x] = 0
+                } 
 
 
 
