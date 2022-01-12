@@ -115,10 +115,15 @@ main(int argc, char *argv[]) {
     }
                 
     // printing...
-    for(int z=0;z<N+2;z++)
-        for(int y=0;y<N+2;y++)
-            for(int x=0;x<N+2;x++)
-                printf("%.2f ",f[z][y][x]);
+    // for(int z=0;z<N+2;z++)
+    //     for(int y=0;y<N+2;y++)
+    //         for(int x=0;x<N+2;x++)
+    //             printf("%.2f ",u[z][y][x]);
+    
+    #ifdef _JACOBI
+    jacobi(N, iter_max, tolerance, u, f);
+    #endif
+    
 
 
     /*
