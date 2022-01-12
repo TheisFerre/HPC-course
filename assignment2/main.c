@@ -28,6 +28,8 @@ main(int argc, char *argv[]) {
     char        *output_ext    = "";
     char	output_filename[FILENAME_MAX];
     double 	***u = NULL;
+    double  ***f = NULL;
+
 
 
     /* get the paramters from the command line */
@@ -40,10 +42,50 @@ main(int argc, char *argv[]) {
     }
 
     // allocate memory
-    if ( (u = d_malloc_3d(N, N, N)) == NULL ) {
+    if ( (u = d_malloc_3d(N+2, N+2, N+2)) == NULL ) {
         perror("array u: allocation failed");
         exit(-1);
     }
+    if ( (f = d_malloc_3d(N+2, N+2, N+2)) == NULL ) {
+        perror("array f: allocation failed");
+        exit(-1);
+    }
+
+
+    /* Initialization of inner point in u*/
+    for(int z=1;z<N+1;z++)
+        for(int y=1;y<N+1;y++)
+            for(int x=1;x<N+1;x++)
+                U[z][y][x]=start_T
+
+    /* Initialization of boundary points in u ~ wall(x,y)*/
+    for(int y=0;y<N+2;y++)
+        for(int x=0;x<N+2;x++)
+            U[0][y][x]=20   
+
+    for(int y=0;y<N+2;y++)
+        for(int x=0;x<N+2;x++)
+            U[N+2][y][x]=0  
+    
+    /* Wall (y,z) */
+    for(int z=0;z<N+2;z++)
+        for(int y=0;y<N+2;y++)
+            U[z][y][0]=20  
+    for(int z=0;z<N+2;z++)
+        for(int y=0;y<N+2;y++)
+            U[z][y][N+2]=20  
+    /* Wall (x,z) */
+    for(int z=0;z<N+2;z++)
+        for(int x=0;x<N+2;x++)
+            U[z][0][x]=20
+    for(int z=0;z<N+2;z++)
+        for(int x=0;x<N+2;x++)
+            U[z][0][N+2]=20
+    
+
+
+
+
 
     /*
      *
