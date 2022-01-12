@@ -26,14 +26,14 @@ double frob_norm(int N, double ***u_new, double ***u_old){
 }
 
 int
-jacobi(int N, int iter_max, double tolerance, double ***u_new, double***f) {
+jacobi(int N, int iter_max, double tolerance, double ***u_old, double***f) {
     // fill in your code here
     double delta;
     delta = 2.0/(N + 1.0);
 
     //create another tmp array
-    double 	***u_old;
-    u_old = d_malloc_3d(N+2, N+2, N+2);
+    double 	***u_new;
+    u_new = d_malloc_3d(N+2, N+2, N+2);
     
     double d = INFINITY;
     int k = 0;
@@ -49,7 +49,7 @@ jacobi(int N, int iter_max, double tolerance, double ***u_new, double***f) {
                     // if (u_old[z][y][x] != u_new[z][y][x]) {
                     //     printf("Diff!\n");
                     // }
-                    u_old[z][y][x] = u_new[z][y][x];
+                    u_new[z][y][x] = u_old[z][y][x];
                 }
             }
         }
@@ -73,7 +73,7 @@ jacobi(int N, int iter_max, double tolerance, double ***u_new, double***f) {
 
         k += 1;
 
-        printf("Iteration no. %d.\t Norm: %f\n", k, d);
+        //printf("Iteration no. %d.\t Norm: %f\n", k, d);
     }
     double flops;
     flops = (10.0 * N * N * N + 2.0 * N * N * N) * k / 1000000.0;
