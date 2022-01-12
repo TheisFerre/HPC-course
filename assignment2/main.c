@@ -56,7 +56,7 @@ main(int argc, char *argv[]) {
     for(int z=1;z<N+1;z++)
         for(int y=1;y<N+1;y++)
             for(int x=1;x<N+1;x++)
-                U[z][y][x]=start_T
+                u[z][y][x]=start_T
 
     /* Initialization of boundary points in u ~ wall(x,y)*/
     for(int y=0;y<N+2;y++)
