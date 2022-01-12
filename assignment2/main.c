@@ -105,24 +105,10 @@ main(int argc, char *argv[]) {
         }
     }
             
+
     /* initialize f */
     double delta;
     delta = 2.0/(N + 1.0);
-    // for(int z=0;z<N+2;z++){
-    //     for(int y=0;y<N+2;y++){
-    //         for(int x=0;x<N+2;x++){
-    //             if (-1 + (delta * x) <= -3.0/8.0 && -1 + (delta * y) <= -1.0/2.0 && -1 + (delta * z) >= -2.0/3.0 && -1 + (delta * z) <= 0) {
-    //                 //printf("z: %d, y: %d, x: %d\n",z,y,x);
-    //                 f[z][y][x] = 200;
-    //             }
-    //             else{
-    //                 f[z][y][x] = 0;
-    //             }
-    //         }
-    //     }
-    }
-
-    //New f
     for(int z=0;z<N+2;z++){
         for(int y=0;y<N+2;y++){
             for(int x=0;x<N+2;x++){
@@ -135,6 +121,7 @@ main(int argc, char *argv[]) {
                 }
             }
         }
+    }
                 
     //printing...
     // for(int z=0;z<N+2;z++)
