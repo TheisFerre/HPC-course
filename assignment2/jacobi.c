@@ -39,8 +39,8 @@ jacobi(int N, int iter_max, double tolerance, double ***u_old, double***f) {
     int k = 0;
     int z, y, x;
     double tol = tolerance;
-    printf("Max iterations:\t%d\n", iter_max);
-    printf("Tolerance:\t%f\n", tolerance);
+    //printf("Max iterations:\t%d\n", iter_max);
+    //printf("Tolerance:\t%f\n", tolerance);
     // TOTAL FLOPS: (10 * N * N * N + FLOPS 2 * N * N * N) * iter_max
     while (d > tol && k < iter_max){
         // update u
@@ -72,24 +72,17 @@ jacobi(int N, int iter_max, double tolerance, double ***u_old, double***f) {
             }
         }
         d = frob_norm(N, u_new, u_old);
+        printf("%f\n", d);
 
         k++;
 
-        printf("Iteration no. %i\t Norm: %f\n", k, d);
-
-        if (d < tolerance) {
-            printf("%i", k);
-            printf("here\n");
-           
-        }
-        if (k > iter_max){
-            printf("iter");
-        }
+        //printf("Iteration no. %i\t Norm: %f\n", k, d);
         
     }
-    double flops;
-    flops = (N * N * N) * k;
-    printf("LUPS: %f", flops);
+    //long double flops;
+    //flops = (N * N * N) * k / 1000000;
+    //printf("%Lf", flops);
+    //printf("%i", k);
 
     // printing...
     // printf("\n\n");
