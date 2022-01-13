@@ -29,15 +29,24 @@ START_T=4
 #export OMP_DISPLAY_ENV=verbose
 
 rm -f ./poisson_jacobi_runtime.dat
+rm -f ./poisson_gauss_runtime.dat
 for N in $N_VALUES
 do
     start=$(date +%s.%N)
     ./poisson_j $N $MAX_ITER $TOL $START_T >> poisson_jacobi_runtime.dat
     end=$(date +%s.%N)
     runtime=$(echo "$end - $start" | bc)
-    printf " $runtime " >> poisson_runtime.dat
-    printf "$N" >> poisson_runtime.dat
-    printf "\n" >> poisson_runtime.dat
+    printf " $runtime " >> poisson_jacobi_runtime.dat
+    printf "$N" >> poisson_jacobi_runtime.dat
+    printf "\n" >> poisson_jacobi_runtime.dat
+
+    start=$(date +%s.%N)
+    ./poisson_gs $N $MAX_ITER $TOL $START_T >> poisson_gauss_runtime.dat
+    end=$(date +%s.%N)
+    runtime=$(echo "$end - $start" | bc)
+    printf " $runtime " >> poisson_gauss_runtime.dat
+    printf "$N" >> poisson_gauss_runtime.dat
+    printf "\n" >> poisson_gauss_runtime.dat
     
     #echo "\n" >> poisson_runtime.dat
 done

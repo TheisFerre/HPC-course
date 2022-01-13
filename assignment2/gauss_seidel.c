@@ -2,6 +2,7 @@
  *
  */ 
 #include <math.h>
+#include <stdio.h>
 
 void
 gauss_seidel(int N, int iter_max, double tolerance, double ***u, double***f) {
@@ -38,7 +39,10 @@ gauss_seidel(int N, int iter_max, double tolerance, double ***u, double***f) {
                         }   
                     }
                 fbnorm=sqrt(fbnorm);
+                //printf("%f\n", fbnorm);
                 k++;
                 }
         }
+        printf("%i", k);
+        
 }

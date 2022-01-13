@@ -2,10 +2,19 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-data = pd.read_csv("poisson_jacobi_convergence.dat")
-data.columns = {'norm'}
+jacobi_f_name = "poisson_jacobi_convergence.dat"
+data_jacobi = pd.read_csv(jacobi_f_name, sep=" ")
 
-ax = data.plot.line()
+gauss_f_name = "poisson_gauss_convergence.dat"
+data_gauss = pd.read_csv(gauss_f_name, sep=" ")
+
+data_jacobi.columns = {'norm'}
+data_gauss.columns = {'norm'}
+
+fig, ax = plt.subplots()
+
+ax.plot(range(1, len(data_jacobi+1)), data_jacobi["norm"], label="Jacobi method")
+ax.plot(range(1, len(data_gauss+1)), data_gauss["norm"], label="Gauss-Seidel method")
 
 ax.set_xlabel("Iteration")
 ax.set_ylabel("Frobenius Norm")

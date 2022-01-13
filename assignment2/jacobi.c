@@ -55,7 +55,7 @@ jacobi(int N, int iter_max, double tolerance, double ***u_old, double***f) {
             }
         }
 
-        //  LUPS 1 * N * N * N #LatticeUpdatesPrSecond
+        // LUPS 1 * N * N * N #LatticeUpdatesPrSecond
         double div = 1.0/6.0;
         #pragma omp parallel for private(z, y, x) shared(delta, f, u_old)
         for(z=1;z<N+1;z++){
@@ -72,7 +72,7 @@ jacobi(int N, int iter_max, double tolerance, double ***u_old, double***f) {
             }
         }
         d = frob_norm(N, u_new, u_old);
-        printf("%f\n", d);
+        //printf("%f\n", d);
 
         k++;
 
@@ -82,7 +82,9 @@ jacobi(int N, int iter_max, double tolerance, double ***u_old, double***f) {
     //long double flops;
     //flops = (N * N * N) * k / 1000000;
     //printf("%Lf", flops);
-    //printf("%i", k);
+
+    // for runtime plot
+    printf("%i", k);
 
     // printing...
     // printf("\n\n");

@@ -29,9 +29,11 @@ START_T=4
 #export OMP_DISPLAY_ENV=verbose
 
 rm -f ./poisson_jacobi_convergence.dat
+rm -f ./poisson_gauss_convergence.dat
 for N in $N_VALUES
 do
     ./poisson_j $N $MAX_ITER $TOL $START_T >> poisson_jacobi_convergence.dat
+    ./poisson_gs $N $MAX_ITER $TOL $START_T >> poisson_gauss_convergence.dat
 done
 
 
