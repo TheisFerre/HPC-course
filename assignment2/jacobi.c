@@ -139,7 +139,7 @@ jacobi(int N, int iter_max, double tolerance, double ***u_new, double***f) {
             }
         }
         d = frob_norm(N, u_new, u_old);
-        //printf("%f\n", d);
+        printf("%f\n", d);
 
         k++;
 
