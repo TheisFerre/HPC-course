@@ -60,7 +60,7 @@ int jacobi(int N, int iter_max, double tolerance, double ***u_new, double***f) {
         }
         }
         fbnorm = sqrt(fbnorm);
-        printf("%f\n", fbnorm);
+        //printf("%f\n", fbnorm);
 
         k++;
 

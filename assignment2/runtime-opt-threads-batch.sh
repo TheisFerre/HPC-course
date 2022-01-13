@@ -31,9 +31,7 @@ START_T=4
 export OMP_RUNTIME=dynamic,10
 #export OMP_DISPLAY_ENV=verbose
 
-rm -f ./jacobi-thread-runtime.dat
-rm -f ./gauss-thread-runtime.dat
-
+rm -f ./jacobi-opt-thread-runtime.dat
 for thread in $THREADS
 do
     export OMP_NUM_THREADS=$thread
@@ -41,17 +39,9 @@ do
     ./poisson_j $N_VAL $MAX_ITER $TOL $START_T
     end=$(date +%s.%N)
     runtime=$(echo "$end - $start" | bc)
-    printf "$thread" >> jacobi-thread-runtime.dat
-    printf " $runtime " >> jacobi-thread-runtime.dat
-    printf "\n" >> jacobi-thread-runtime.dat
-
-    start=$(date +%s.%N)
-    ./poisson_gs $N_VAL $MAX_ITER $TOL $START_T
-    end=$(date +%s.%N)
-    runtime=$(echo "$end - $start" | bc)
-    printf "$thread" >> gauss-thread-runtime.dat
-    printf " $runtime " >> gauss-thread-runtime.dat
-    printf "\n" >> gauss-thread-runtime.dat
+    printf "$thread" >> jacobi-opt-thread-runtime.dat
+    printf " $runtime " >> jacobi-opt-thread-runtime.dat
+    printf "\n" >> jacobi-opt-thread-runtime.dat
 
 done
 
