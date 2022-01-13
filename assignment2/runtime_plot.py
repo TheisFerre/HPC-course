@@ -21,7 +21,7 @@ data_jacobi["Mlups/s"] = data_jacobi["N"]**3 * data_jacobi["k"] / 1000000
 data_gauss["Mlups/s"] = data_gauss["N"]**3 * data_gauss["k"] / 1000000
 
 plt.plot(data_jacobi["N"], data_jacobi["Mlups/s"], label="Jacobi method")
-plt.plot(data_gauss["N"], data_gauss["Mlups/s"], label="Jacobi method")
+plt.plot(data_gauss["N"], data_gauss["Mlups/s"], label="Gauss-seidel method")
 plt.ylabel("Mlups/s")
 plt.xlabel("N")
 plt.title("Mlups/s comparison")

@@ -36,13 +36,13 @@ gauss_seidel(int N, int iter_max, double tolerance, double ***u, double***f) {
                                 fbnorm+=(u[z][y][x]-u_old)*(u[z][y][x]-u_old);
                             }
                             #pragma omp ordered depend(source)
-                        }   
+                        }
                     }
                 fbnorm=sqrt(fbnorm);
-                //printf("%f\n", fbnorm);
                 k++;
                 }
+        printf("%f\n", fbnorm);  
         }
-        printf("%i", k);
+        //printf("%i", k);
         
 }
