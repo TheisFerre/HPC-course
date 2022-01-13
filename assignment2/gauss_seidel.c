@@ -14,7 +14,7 @@ gauss_seidel(int N, int iter_max, double tolerance, double ***u, double***f) {
     double u_old;
     while(fbnorm>tolerance && k<iter_max)
     {fbnorm=0;
-        #pragma omp for ordered(2) private(j,k)
+        #pragma omp for ordered(2) private(x,y,z)
         for(int z=1;z<N+1;z++)
         {
             for(y=1;y<N+1;y++)
