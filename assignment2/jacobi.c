@@ -66,7 +66,7 @@ int jacobi(int N, int iter_max, double tolerance, double ***u_new, double***f) {
     }
 
     // for runtime plot
-    printf("%i", k);
+   // printf("%i", k);
 
     free(u_old);
     return 0;
@@ -139,7 +139,7 @@ jacobi(int N, int iter_max, double tolerance, double ***u_new, double***f) {
             }
         }
         d = frob_norm(N, u_new, u_old);
-        printf("%f\n", d);
+        //printf("%f\n", d);
 
         k++;
 
@@ -159,7 +159,7 @@ jacobi(int N, int iter_max, double tolerance, double ***u_new, double***f) {
     //     for(int y=0;y<N+2;y++)
     //         for(int x=0;x<N+2;x++)
     //             printf("%.2f ",u_new[z][y][x]);
-    free(u_new);
+    free(u_old);
     return 0;
 }
 #endif
