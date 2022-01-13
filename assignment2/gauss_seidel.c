@@ -14,10 +14,12 @@ gauss_seidel(int N, int iter_max, double tolerance, double ***u, double***f) {
     double u_old;
     
         while(fbnorm>tolerance && k<iter_max)
-            #pragma omp parallel
+            //#pragma omp parallel
             {   
                 {fbnorm=0;
-                    #pragma omp for schedule(static,1) ordered(2) private(x,y,z)
+                    #pragma omp parallel for default(none)\
+                    schedule(static,1) ordered(2) private(x,y,z,u_old) shared(N,f,u,delta2,C)\
+                    reduction(+:fbnorm)
                     for(z=1;z<N+1;z++)
                     {
                         for(y=1;y<N+1;y++)
