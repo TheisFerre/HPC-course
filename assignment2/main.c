@@ -59,11 +59,11 @@ main(int argc, char *argv[]) {
     }
 
 
-    /* Initialization of inner point in u*/
-    for(int z=1;z<N+1;z++)
-        for(int y=1;y<N+1;y++)
-            for(int x=1;x<N+1;x++)
-                u[z][y][x]=start_T;
+    // /* Initialization of inner point in u*/
+    // for(int z=1;z<N+1;z++)
+    //     for(int y=1;y<N+1;y++)
+    //         for(int x=1;x<N+1;x++)
+    //             u[z][y][x]=start_T;
 
     /* Initialization of boundary points in u ~ wall(x,y)*/
     for(int y=0;y<N+2;y++){
@@ -112,16 +112,22 @@ main(int argc, char *argv[]) {
     for(int z=0;z<N+2;z++){
         for(int y=0;y<N+2;y++){
             for(int x=0;x<N+2;x++){
-                if (-1 + delta * x <= -3.0/8.0 && -1.0 + delta * y <= -1.0/2.0 && -1 + delta * z >= -2.0/3.0 && -1.0 + delta * z <= 0) {
-                    f[z][y][x] = 200;
-                }
-                else{
-                    f[z][y][x] = 0;
-                //f[z][y][x] = 3*M_PI*M_PI*sin(M_PI*(-1 + (delta * x)))*sin(M_PI*(-1 + (delta * y)))*sin(M_PI*(-1 + (delta * z)));
+                // if (-1 + delta * x <= -3.0/8.0 && -1.0 + delta * y <= -1.0/2.0 && -1 + delta * z >= -2.0/3.0 && -1.0 + delta * z <= 0) {
+                //     f[z][y][x] = 200;
+                // }
+                // else{
+                //     f[z][y][x] = 0;
+                f[z][y][x] = 3*M_PI*M_PI*sin(M_PI*(-1 + (delta * x)))*sin(M_PI*(-1 + (delta * y)))*sin(M_PI*(-1 + (delta * z)));
+                u[z][y][x] = 0;
                 }
             }
         }
-    }
+
+    /* Initialization of inner point in u*/
+    for(int z=1;z<N+1;z++)
+        for(int y=1;y<N+1;y++)
+            for(int x=1;x<N+1;x++)
+                u[z][y][x]=start_T;
                 
     //printing...
     // for(int z=0;z<N+2;z++)
