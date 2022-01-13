@@ -7,15 +7,15 @@
 #include "alloc3d.h"
 
 #ifdef JACOBI_OPT
-int jacobi(int N, int iter_max, double tolerance, double ***u_old, double***f) {
+int jacobi(int N, int iter_max, double tolerance, double ***u_new, double***f) {
     // fill in your code here
-    printf("OPT\n");
+    //printf("OPT\n");
     double delta;
     delta = 2.0/(N + 1.0);
 
     //create another tmp array
-    double 	***u_new;
-    u_new = d_malloc_3d(N+2, N+2, N+2);
+    double 	***u_old;
+    u_old = d_malloc_3d(N+2, N+2, N+2);
     
     double fbnorm = 1000000;
     int k = 0;
@@ -57,7 +57,7 @@ int jacobi(int N, int iter_max, double tolerance, double ***u_old, double***f) {
             }
         }
         fbnorm = sqrt(fbnorm);
-        //printf("%f\n", d);
+        printf("%f\n", fbnorm);
 
         k++;
 
@@ -68,7 +68,7 @@ int jacobi(int N, int iter_max, double tolerance, double ***u_old, double***f) {
     // for runtime plot
     printf("%i", k);
 
-    free(u_new);
+    free(u_old);
     return 0;
 }
 #else
@@ -92,15 +92,15 @@ double frob_norm(int N, double ***u_new, double ***u_old){
 }
 
 int
-jacobi(int N, int iter_max, double tolerance, double ***u_old, double***f) {
+jacobi(int N, int iter_max, double tolerance, double ***u_new, double***f) {
     // fill in your code here
-    printf("NON-OPT\n");
+    //printf("NON-OPT\n");
     double delta;
     delta = 2.0/(N + 1.0);
 
     //create another tmp array
-    double 	***u_new;
-    u_new = d_malloc_3d(N+2, N+2, N+2);
+    double 	***u_old;
+    u_old = d_malloc_3d(N+2, N+2, N+2);
     
     double d = INFINITY;
     int k = 0;
