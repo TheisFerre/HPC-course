@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include "alloc3d.h"
 
-#ifdef _JACOBI_OPT
+#ifdef JACOBI_OPT
 int jacobi(int N, int iter_max, double tolerance, double ***u_old, double***f) {
     // fill in your code here
     printf("OPT\n");
@@ -94,7 +94,7 @@ double frob_norm(int N, double ***u_new, double ***u_old){
 int
 jacobi(int N, int iter_max, double tolerance, double ***u_old, double***f) {
     // fill in your code here
-    //printf("NON-OPT\n");
+    printf("NON-OPT\n");
     double delta;
     delta = 2.0/(N + 1.0);
 
