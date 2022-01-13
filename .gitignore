@@ -58,3 +58,4 @@ dkms.conf
 
 # python stuff
 venv
+poisson_*

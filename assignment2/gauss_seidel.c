@@ -6,19 +6,18 @@
 void
 gauss_seidel(int N, int iter_max, double tolerance, double ***u, double***f) {
 
-
     double fbnorm=1000000;
     double C= 1.0/6.0;
     double delta = 2.0/(N + 1.0);
     double delta2=delta*delta;
-    int k;
+    int k,z,y,x;
     double u_old;
     while(fbnorm>tolerance && k<iter_max)
     {fbnorm=0;
         #pragma omp for ordered(2) private(j,k)
         for(int z=1;z<N+1;z++)
         {
-            for(int y=1;y<N+1;y++)
+            for(y=1;y<N+1;y++)
             {
                 #pragma omp ordered depend(sink: z-1,y)\
                                     depend(sink: z,y-1)

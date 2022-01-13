@@ -26,22 +26,23 @@ double frob_norm(int N, double ***u_new, double ***u_old){
 }
 
 int
-jacobi(int N, int iter_max, double tolerance, double ***u_new, double***f) {
+jacobi(int N, int iter_max, double tolerance, double ***u_old, double***f) {
     // fill in your code here
     double delta;
     delta = 2.0/(N + 1.0);
 
     //create another tmp array
-    double 	***u_old;
-    u_old = d_malloc_3d(N+2, N+2, N+2);
+    double 	***u_new;
+    u_new = d_malloc_3d(N+2, N+2, N+2);
     
     double d = INFINITY;
     int k = 0;
     int z, y, x;
+    double tol = tolerance;
     printf("Max iterations:\t%d\n", iter_max);
     printf("Tolerance:\t%f\n", tolerance);
     // TOTAL FLOPS: (10 * N * N * N + FLOPS 2 * N * N * N) * iter_max
-    while (d > tolerance && k < iter_max){
+    while (d > tol && k < iter_max){
         // update u
         for(z=0;z<N+2;z++){
             for(y=0;y<N+2;y++){
@@ -54,12 +55,13 @@ jacobi(int N, int iter_max, double tolerance, double ***u_new, double***f) {
             }
         }
 
-        // FLOPS 10 * N * N * N
+        //  LUPS 1 * N * N * N #LatticeUpdatesPrSecond
+        double div = 1.0/6.0;
         #pragma omp parallel for private(z, y, x) shared(delta, f, u_old)
         for(z=1;z<N+1;z++){
             for(y=1;y<N+1;y++){
                 for(x=1;x<N+1;x++){
-                    u_new[z][y][x] = 1.0/6.0 * (u_old[z-1][y][x] + \
+                    u_new[z][y][x] = div * (u_old[z-1][y][x] + \
                                             u_old[z+1][y][x] + \
                                             u_old[z][y-1][x] + \
                                             u_old[z][y+1][x] + \
@@ -71,14 +73,23 @@ jacobi(int N, int iter_max, double tolerance, double ***u_new, double***f) {
         }
         d = frob_norm(N, u_new, u_old);
 
-        k += 1;
+        k++;
 
-        printf("Iteration no. %d.\t Norm: %f\n", k, d);
+        printf("Iteration no. %i\t Norm: %f\n", k, d);
+
+        if (d < tolerance) {
+            printf("%i", k);
+            printf("here\n");
+           
+        }
+        if (k > iter_max){
+            printf("iter");
+        }
+        
     }
     double flops;
-    flops = (10.0 * N * N * N + 2.0 * N * N * N) * k / 1000000.0;
-    printf("Mflops: %f", flops);
-
+    flops = (N * N * N) * k;
+    printf("LUPS: %f", flops);
 
     // printing...
     // printf("\n\n");
@@ -86,6 +97,6 @@ jacobi(int N, int iter_max, double tolerance, double ***u_new, double***f) {
     //     for(int y=0;y<N+2;y++)
     //         for(int x=0;x<N+2;x++)
     //             printf("%.2f ",u_new[z][y][x]);
-    free(u_old);
+    free(u_new);
     return 0;
 }
