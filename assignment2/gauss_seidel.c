@@ -41,7 +41,7 @@ gauss_seidel(int N, int iter_max, double tolerance, double ***u, double***f) {
                 fbnorm=sqrt(fbnorm);
                 k++;
                 }
-        //printf("%f\n", fbnorm);  
+        printf("%f\n", fbnorm);  
         }
         //printf("%i", k);
         

@@ -27,6 +27,7 @@ int jacobi(int N, int iter_max, double tolerance, double ***u_new, double***f) {
     // TOTAL FLOPS: (10 * N * N * N + FLOPS 2 * N * N * N) * iter_max
     while (fbnorm > tol && k < iter_max){
         // update u
+        fbnorm=0;
         #pragma omp parallel private(z, y, x) shared(delta, f, u_old)
         {
         #pragma omp for collapse(2)
@@ -42,7 +43,6 @@ int jacobi(int N, int iter_max, double tolerance, double ***u_new, double***f) {
         }
 
         // LUPS 1 * N * N * N #LatticeUpdatesPrSecond
-        fbnorm=0;
         #pragma omp for collapse(2) reduction(+:fbnorm)
         for(z=1;z<N+1;z++){
             for(y=1;y<N+1;y++){
@@ -60,7 +60,7 @@ int jacobi(int N, int iter_max, double tolerance, double ***u_new, double***f) {
         }
         }
         fbnorm = sqrt(fbnorm);
-        //printf("%f\n", fbnorm);
+        printf("%f\n", fbnorm);
 
         k++;
 
