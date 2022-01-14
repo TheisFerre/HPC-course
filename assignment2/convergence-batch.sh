@@ -18,14 +18,14 @@ echo ${CACHE_SIZE}
 
 CC=${1-"gcc"}
 
-N_VALUES="300"
-MAX_ITER=1100
-TOL=0.01
-START_T=4
+N_VALUES="150"
+MAX_ITER=10000
+TOL=1
+START_T=0
 
 ### OMP ENV VARS ###
-#export OMP_NUM_THREADS=1
-#export OMP_RUNTIME=dynamic,10
+export OMP_NUM_THREADS=12
+export OMP_RUNTIME=dynamic,10
 #export OMP_DISPLAY_ENV=verbose
 
 rm -f ./poisson_jacobi_convergence.dat

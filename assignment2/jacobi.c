@@ -8,10 +8,12 @@
 
 #ifdef JACOBI_OPT
 int jacobi(int N, int iter_max, double tolerance, double ***u_new, double***f) {
-    // fill in your code here
+    //fill in your code here
     //printf("OPT\n");
     double delta;
+    double delta_sq;
     delta = 2.0/(N + 1.0);
+    delta_sq = delta * delta;
 
     //create another tmp array
     double 	***u_old;
@@ -27,6 +29,10 @@ int jacobi(int N, int iter_max, double tolerance, double ***u_new, double***f) {
     // TOTAL FLOPS: (10 * N * N * N + FLOPS 2 * N * N * N) * iter_max
     while (fbnorm > tol && k < iter_max){
         // update u
+        fbnorm=0;
+        #pragma omp parallel private(z, y, x) shared(delta, f, u_old)
+        {
+        #pragma omp for collapse(2)
         for(z=0;z<N+2;z++){
             for(y=0;y<N+2;y++){
                 for(x=0;x<N+2;x++){
@@ -39,9 +45,7 @@ int jacobi(int N, int iter_max, double tolerance, double ***u_new, double***f) {
         }
 
         // LUPS 1 * N * N * N #LatticeUpdatesPrSecond
-        fbnorm=0;
-        #pragma omp parallel for private(z, y, x) shared(delta, f, u_old)\
-        reduction(+:fbnorm)
+        #pragma omp for collapse(2) reduction(+:fbnorm)
         for(z=1;z<N+1;z++){
             for(y=1;y<N+1;y++){
                 for(x=1;x<N+1;x++){
@@ -51,13 +55,14 @@ int jacobi(int N, int iter_max, double tolerance, double ***u_new, double***f) {
                                             u_old[z][y+1][x] + \
                                             u_old[z][y][x-1] + \
                                             u_old[z][y][x+1] + \
-                                            delta * delta * f[z][y][x]);
+                                            delta_sq * f[z][y][x]);
                     fbnorm+=(u_new[z][y][x]-u_old[z][y][x])*(u_new[z][y][x]-u_old[z][y][x]);
                 }
             }
         }
+        }
         fbnorm = sqrt(fbnorm);
-        printf("%f\n", fbnorm);
+        //printf("%f\n", fbnorm);
 
         k++;
 
@@ -66,7 +71,7 @@ int jacobi(int N, int iter_max, double tolerance, double ***u_new, double***f) {
     }
 
     // for runtime plot
-   // printf("%i", k);
+    //printf("%i", k);
 
     free(u_old);
     return 0;
