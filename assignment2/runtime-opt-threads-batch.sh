@@ -2,7 +2,7 @@
 #BSUB -J jacobi_batch
 #BSUB -o jacobi_batch_%J.out
 #BSUB -e jacobi_batch_%J.err
-#BSUB -n 12
+#BSUB -n 2
 #BSUB -R "rusage[mem=8096]"
 #BSUB -q hpcintro
 #BSUB -R "select[model == XeonE5_2650v4]"

@@ -11,7 +11,9 @@ int jacobi(int N, int iter_max, double tolerance, double ***u_new, double***f) {
     //fill in your code here
     //printf("OPT\n");
     double delta;
+    double delta_sq;
     delta = 2.0/(N + 1.0);
+    delta_sq = delta * delta;
 
     //create another tmp array
     double 	***u_old;
@@ -53,7 +55,7 @@ int jacobi(int N, int iter_max, double tolerance, double ***u_new, double***f) {
                                             u_old[z][y+1][x] + \
                                             u_old[z][y][x-1] + \
                                             u_old[z][y][x+1] + \
-                                            delta * delta * f[z][y][x]);
+                                            delta_sq * f[z][y][x]);
                     fbnorm+=(u_new[z][y][x]-u_old[z][y][x])*(u_new[z][y][x]-u_old[z][y][x]);
                 }
             }

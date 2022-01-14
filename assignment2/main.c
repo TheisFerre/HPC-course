@@ -130,14 +130,28 @@ main(int argc, char *argv[]) {
     //             printf("%.2f ",f[z][y][x]);
     
     #ifdef _JACOBI
+    #ifdef _OPENMP
+    double ts, te;
+    ts = omp_get_wtime();
     jacobi(N, iter_max, tolerance, u, f);
+    te = omp_get_wtime() - ts;
+    printf("%lf\n", te);
+    #else
+    jacobi(N, iter_max, tolerance, u, f);
+    #endif
     #endif
 
     #ifdef _GAUSS_SEIDEL
+    #ifdef _OPENMP
+    double ts, te;
+    ts = omp_get_wtime();
+    gauss_seidel(N, iter_max, tolerance, u, f);
+    te = omp_get_wtime() - ts;
+    printf("%lf\n", te);
+    #else
     gauss_seidel(N, iter_max, tolerance, u, f);
     #endif
-    
-
+    #endif
 
     /*
      *

@@ -15,6 +15,7 @@ fig, ax = plt.subplots()
 
 ax.plot(range(1, len(data_jacobi) + 1), data_jacobi["norm"], label="Jacobi method")
 ax.plot(range(1, len(data_gauss) + 1), data_gauss["norm"], label="Gauss-Seidel method")
+ax.axhline(y=1, c="r", linestyle="dashed", label="Tolerance=1")
 
 ax.set_xlabel("Iteration")
 ax.set_ylabel("Frobenius Norm")
