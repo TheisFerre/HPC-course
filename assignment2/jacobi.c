@@ -27,12 +27,19 @@ int jacobi(int N, int iter_max, double tolerance, double ***u_new, double***f) {
     //printf("Max iterations:\t%d\n", iter_max);
     //printf("Tolerance:\t%f\n", tolerance);
     // TOTAL FLOPS: (10 * N * N * N + FLOPS 2 * N * N * N) * iter_max
+    #pragma omp parallel default(none)\
+    private(z, y, x)\
+    shared(delta, f, u_old,u_new,fbnorm,k,N,div,delta_sq,tol,iter_max)
     while (fbnorm > tol && k < iter_max){
-        // update u
-        fbnorm=0;
-        #pragma omp parallel private(z, y, x) shared(delta, f, u_old)
+    #pragma omp barrier
+            // update u
+        #pragma omp single
         {
-        #pragma omp for collapse(2)
+        fbnorm=0;
+        }
+
+        {
+        #pragma omp for /*collapse(2)*/
         for(z=0;z<N+2;z++){
             for(y=0;y<N+2;y++){
                 for(x=0;x<N+2;x++){
@@ -45,7 +52,7 @@ int jacobi(int N, int iter_max, double tolerance, double ***u_new, double***f) {
         }
 
         // LUPS 1 * N * N * N #LatticeUpdatesPrSecond
-        #pragma omp for collapse(2) reduction(+:fbnorm)
+        #pragma omp for /*collapse(2)*/ reduction(+:fbnorm)
         for(z=1;z<N+1;z++){
             for(y=1;y<N+1;y++){
                 for(x=1;x<N+1;x++){
@@ -61,11 +68,13 @@ int jacobi(int N, int iter_max, double tolerance, double ***u_new, double***f) {
             }
         }
         }
+        /* kør fbnorm og k++ som singler*/ 
+        #pragma omp single
+        {
         fbnorm = sqrt(fbnorm);
         //printf("%f\n", fbnorm);
-
         k++;
-
+        } /* END OF SINGLE */
         //printf("Iteration no. %i\t Norm: %f\n", k, d);
         
     }
