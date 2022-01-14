@@ -19,9 +19,10 @@ echo ${CACHE_SIZE}
 
 CC=${1-"gcc"}
 
-THREADS="1 2 3 4 5 6 7 8 9 10 11 12"
+THREADS="1 2 3 4 5 6 7 8"
+N_VALS="10 20"
 
-N_VAL=500
+
 MAX_ITER=150
 TOL=0.01
 START_T=4
@@ -33,13 +34,22 @@ export OMP_RUNTIME=dynamic
 #export OMP_PROC_BIND=spread
 #export OMP_DISPLAY_ENV=verbose
 
-rm -f ./jacobi-opt-thread-runtime.dat
+rm -f ./new-scaling-jacobi-runtime.dat
+rm -f ./new-scaling-gauss-runtime.dat
 for thread in $THREADS
 do
+for N in $N_VALS
+do
     export OMP_NUM_THREADS=$thread
-    printf "$thread " >> jacobi-opt-thread-runtime.dat
-    ./poisson_j $N_VAL $MAX_ITER $TOL $START_T >> jacobi-opt-thread-runtime.dat
+    printf "$thread " >> new-scaling-jacobi-runtime.dat
+    printf "$N " >> new-scaling-jacobi-runtime.dat
+    ./poisson_j $N $MAX_ITER $TOL $START_T >> new-scaling-jacobi-runtime.dat
+
+    printf "$thread " >> new-scaling-gauss-runtime.dat
+    printf "$N " >> new-scaling-gauss-runtime.dat
+    ./poisson_gs $N $MAX_ITER $TOL $START_T >> new-scaling-gauss-runtime.dat
+done
 done
 
-
+# thread N time
 exit 0

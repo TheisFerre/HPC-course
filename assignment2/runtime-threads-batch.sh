@@ -2,7 +2,7 @@
 #BSUB -J jacobi_batch
 #BSUB -o jacobi_batch_%J.out
 #BSUB -e jacobi_batch_%J.err
-#BSUB -n 2
+#BSUB -n 24
 #BSUB -R "rusage[mem=8096]"
 #BSUB -q hpc
 #BSUB -R "select[model == XeonE5_2650v4]"
@@ -10,7 +10,7 @@
 #BSUB -N
 # uncomment the following line, if you want to assure that your job has
 # a whole CPU for itself (shared L3 cache)
-#BSUB -R "span[hosts=1] affinity[socket(1)]"
+#BSUB -R "span[hosts=1]"
 
 # Check cache
 echo "checking CPU info"
@@ -19,7 +19,7 @@ echo ${CACHE_SIZE}
 
 CC=${1-"gcc"}
 
-THREADS="1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24"
+THREADS="1 2 3 4 5 6 7 8 9 10 11 12"
 
 N_VAL=500
 MAX_ITER=150
@@ -28,7 +28,9 @@ START_T=4
 
 ### OMP ENV VARS ###
 #export OMP_NUM_THREADS=1
-export OMP_RUNTIME=dynamic,10
+export OMP_RUNTIME=dynamic
+#export OMP_PLACES=cores
+#export OMP_PROC_BIND=spread
 #export OMP_DISPLAY_ENV=verbose
 
 rm -f ./jacobi-thread-runtime.dat

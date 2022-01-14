@@ -68,7 +68,6 @@ int jacobi(int N, int iter_max, double tolerance, double ***u_new, double***f) {
             }
         }
         }
-        /* kør fbnorm og k++ som singler*/ 
         #pragma omp single
         {
         fbnorm = sqrt(fbnorm);
@@ -158,21 +157,7 @@ jacobi(int N, int iter_max, double tolerance, double ***u_new, double***f) {
         k++;
 
         //printf("Iteration no. %i\t Norm: %f\n", k, d);
-        
     }
-    //long double flops;
-    //flops = (N * N * N) * k / 1000000;
-    //printf("%Lf", flops);
-
-    // for runtime plot
-    //printf("%i", k);
-
-    // printing...
-    // printf("\n\n");
-    // for(int z=0;z<N+2;z++)
-    //     for(int y=0;y<N+2;y++)
-    //         for(int x=0;x<N+2;x++)
-    //             printf("%.2f ",u_new[z][y][x]);
     free(u_old);
     return 0;
 }

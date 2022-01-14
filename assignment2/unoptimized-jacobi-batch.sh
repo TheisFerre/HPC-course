@@ -21,7 +21,7 @@ CC=${1-"gcc"}
 
 THREADS="1 2 3 4 5 6 7 8 9 10 11 12"
 
-N_VAL=500
+N_VAL=50
 MAX_ITER=150
 TOL=0.01
 START_T=4
@@ -33,12 +33,12 @@ export OMP_RUNTIME=dynamic
 #export OMP_PROC_BIND=spread
 #export OMP_DISPLAY_ENV=verbose
 
-rm -f ./jacobi-opt-thread-runtime.dat
+rm -f ./jacobi-unoptimized-runtime.dat
 for thread in $THREADS
 do
     export OMP_NUM_THREADS=$thread
-    printf "$thread " >> jacobi-opt-thread-runtime.dat
-    ./poisson_j $N_VAL $MAX_ITER $TOL $START_T >> jacobi-opt-thread-runtime.dat
+    printf "$thread " >> jacobi-unoptimized-runtime.dat
+    ./poisson_j $N_VAL $MAX_ITER $TOL $START_T >> jacobi-unoptimized-runtime.dat
 done
 
 
