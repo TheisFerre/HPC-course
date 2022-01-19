@@ -26,8 +26,5 @@ __global__ void jacobi(int N, double ***u_new,double ***u_old, double***f) {
                                         delta_sq * f[z][y][x]);
             }
         }
-        
-
-        
     }
 }
