@@ -1,5 +1,5 @@
 TARGET= example3d
-OBJS	= alloc3d.o alloc3d_gpu.o transfer3d_gpu.o example3d.o
+OBJS	= main.o alloc3d.o alloc3d_gpu.o transfer3d_gpu.o example3d.o
 
 OPT	= -g -O3
 ISA	= 
