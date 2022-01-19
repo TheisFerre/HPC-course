@@ -204,8 +204,6 @@ __global__ void gpu4_kernel(int M, int N, int K, double *A_d, double *B_d, doubl
 
     // read row of A
     int t;
-
-    // NOTE: BLOCK_SIZE = M/2 or just BLOCK_SIZE > THREAD_COMPUTE^2
     for (t = 0; t < THREAD_COMPUTE; t++){
         int i, j;
         double sum_val = 0;
