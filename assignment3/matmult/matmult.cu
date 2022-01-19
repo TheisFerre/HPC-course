@@ -97,8 +97,8 @@ extern "C" {
         // Initialize number of blocks and threads
         int BLOCK_SIZE = 16;
         dim3 numOfThreadsPerBlock(BLOCK_SIZE, BLOCK_SIZE);
-        int xSize = (N + numOfThreadsPerBlock.x - 1) / numOfThreadsPerBlock.x;
-        int ySize = (M + numOfThreadsPerBlock.y - 1) / numOfThreadsPerBlock.y;
+        int xSize = ceil((double)(N + numOfThreadsPerBlock.x - 1) / (double)numOfThreadsPerBlock.x);
+        int ySize = ceil((double)(M + numOfThreadsPerBlock.y - 1) / (double)numOfThreadsPerBlock.y);
         dim3 numOfBlocks(xSize, ySize);
 
         gpu2_kernel<<<numOfThreadsPerBlock, numOfBlocks>>>(M, N , K, A_d, B_d, C_d);
