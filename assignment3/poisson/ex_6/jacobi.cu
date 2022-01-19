@@ -13,21 +13,17 @@ __global__ void jacobi(int N, double ***u_new,double ***u_old, double***f) {
     delta_sq = delta * delta;
     int z, y, x;
     double div = 1.0/6.0;
-    //perform Jacobi iterations
-    for(z=1;z<N+1;z++){
-        for(y=1;y<N+1;y++){
-            for(x=1;x<N+1;x++){
-                u_new[z][y][x] = div * (u_old[z-1][y][x] + \
-                                        u_old[z+1][y][x] + \
-                                        u_old[z][y-1][x] + \
-                                        u_old[z][y+1][x] + \
-                                        u_old[z][y][x-1] + \
-                                        u_old[z][y][x+1] + \
-                                        delta_sq * f[z][y][x]);
-            }
-        }
-        
 
-        
-    }
+    x=blockIdx.x*blockDim.x+threadIdx.x;
+    y=blockIdx.y*blockDim.y+threadIdx.y;
+    z=blockIdx.z*blockDim.z+threadIdx.z;
+    if (x>=N || y>=N || z>=N){return;}
+    //perform Jacobi iterations
+    u_new[z][y][x] = div * (u_old[z-1][y][x] + \
+                            u_old[z+1][y][x] + \
+                            u_old[z][y-1][x] + \
+                            u_old[z][y+1][x] + \
+                            u_old[z][y][x-1] + \
+                            u_old[z][y][x+1] + \
+                            delta_sq * f[z][y][x]);
 }

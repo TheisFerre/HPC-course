@@ -133,9 +133,11 @@ main(int argc, char *argv[]) {
 
 
     double*** temp = NULL;
+    dim3 dimGrid(ceil(N/8.0),ceil(N/8.0),ceil(N/8.0));
+    dim3 dimBlock(8,8,8);
     /////////////////////////////////  COMPUTE ///////////////////////////////
     for (int k=0; k<iter_max;k++){
-        jacobi<<<1,1>>>(N,u_new_d,u_old_d,f_d);
+        jacobi<<<dimGrid, dimBlock>>>(N,u_new_d,u_old_d,f_d);
         checkCudaErrors(cudaDeviceSynchronize());
         temp = u_old_d;
         u_old_d = u_new_d;
