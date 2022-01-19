@@ -62,11 +62,9 @@ __global__ void gpu2_kernel(int M, int N, int K, double *A_d, double *B_d, doubl
     // B = K X N
     // C = M X N
 
-    // read row of A
-    int i, j;
-    double sum_val = 0;
-
     if (ROW < M && COL < N) {
+        int i, j;
+        double sum_val = 0;
         for (i = 0; i < K; i++){
             sum_val += A_d[ROW * K + i] * B_d[i * N + COL];
         }
@@ -123,12 +121,10 @@ __global__ void gpu3_kernel(int M, int N, int K, double *A_d, double *B_d, doubl
     // B = K X N
     // C = M X N
 
-    // read row of A
-    int i, j;
-    double sum_val1 = 0;
-    double sum_val2 = 0;
-
     if (ROW2 < M && COL < N) {
+        int i, j;
+        double sum_val1 = 0;
+        double sum_val2 = 0;
         for (i = 0; i < K; i++){
             sum_val1 += A_d[ROW1 * K + i] * B_d[i * N + COL];
             sum_val2 += A_d[ROW2 * K + i] * B_d[i * N + COL];
@@ -138,6 +134,8 @@ __global__ void gpu3_kernel(int M, int N, int K, double *A_d, double *B_d, doubl
     }
 
     else if (ROW1 < M && COL < N){
+        int i, j;
+        double sum_val1 = 0;
         for (i = 0; i < K; i++){
             sum_val1 += A_d[ROW1 * K + i] * B_d[i * N + COL];
         }
@@ -191,8 +189,7 @@ extern "C" {
 
 }
 
-#define THREAD_COMPUTE 4
-
+#define THREAD_COMPUTE 4 // number of c elements a thread should compute
 __global__ void gpu4_kernel(int M, int N, int K, double *A_d, double *B_d, double *C_d){
 
     int ROW = (blockIdx.y * blockDim.y + threadIdx.y) * THREAD_COMPUTE;
@@ -202,7 +199,6 @@ __global__ void gpu4_kernel(int M, int N, int K, double *A_d, double *B_d, doubl
     // B = K X N
     // C = M X N
 
-    // read row of A
     int t;
     for (t = 0; t < THREAD_COMPUTE; t++){
         int i, j;
@@ -214,15 +210,6 @@ __global__ void gpu4_kernel(int M, int N, int K, double *A_d, double *B_d, doubl
             C_d[(ROW + t) * N + COL] = sum_val;
         }
     }
-
-    // for (t = THREAD_COMPUTE-1; t >= 0; t--){
-    //     if ((ROW + t) < M && COL < N){
-    //         for (i = 0; i < K; i++){
-    //             sum_val += A_d[(ROW + t) * K + i] * B_d[i * N + COL];
-    //         }
-    //         C_d[(ROW + t) * N + COL] = sum_val;
-    //     }
-    // }
 }
 
 extern "C" {
