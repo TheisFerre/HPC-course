@@ -191,11 +191,11 @@ extern "C" {
 
 }
 
+#define THREAD_COMPUTE = 4;
 
 __global__ void gpu4_kernel(int M, int N, int K, double *A_d, double *B_d, double *C_d){
 
-    int ROW1 = (blockIdx.y * blockDim.y + threadIdx.y) * 2;
-    int ROW2 = ROW1 + 1;
+    int ROW = (blockIdx.y * blockDim.y + threadIdx.y) * 2;
     int COL = blockIdx.x * blockDim.x + threadIdx.x;
 
     // A = M X K
@@ -203,28 +203,19 @@ __global__ void gpu4_kernel(int M, int N, int K, double *A_d, double *B_d, doubl
     // C = M X N
 
     // read row of A
-    int i, j;
-    double sum_val1 = 0;
-    double sum_val2 = 0;
+    int i, j, t;
+    double sum_val = 0;
 
-    if (ROW2 < M && COL < N) {
-        for (i = 0; i < K; i++){
-            sum_val1 += A_d[ROW1 * K + i] * B_d[i * N + COL];
-            sum_val2 += A_d[ROW2 * K + i] * B_d[i * N + COL];
+    for (t = 0; t < THREAD_COMPUTE; t++){
+        if ((ROW+t) < M && COL < N){
+            for (i = 0; i < K; i++){
+            sum_val += A_d[(ROW + t) * K + i] * B_d[i * N + COL];
         }
-        C_d[ROW1 * N + COL] = sum_val1;
-        C_d[ROW2 * N + COL] = sum_val2;
-    }
-
-    else if (ROW1 < M && COL < N){
-        for (i = 0; i < K; i++){
-            sum_val1 += A_d[ROW1 * K + i] * B_d[i * N + COL];
+        C_d[(ROW + t) * N + COL] = sum_val;
         }
-        C_d[ROW1 * N + COL] = sum_val1;
-
     }
-
 }
+
 extern "C" {
     void matmult_gpu4(int M, int N, int K, double *A_h, double *B_h, double *C_h){
         double *A_d;
