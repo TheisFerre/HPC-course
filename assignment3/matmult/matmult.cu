@@ -191,11 +191,11 @@ extern "C" {
 
 }
 
-#define THREAD_COMPUTE = 4;
+#define THREAD_COMPUTE 4
 
 __global__ void gpu4_kernel(int M, int N, int K, double *A_d, double *B_d, double *C_d){
 
-    int ROW = (blockIdx.y * blockDim.y + threadIdx.y) * 2;
+    int ROW = (blockIdx.y * blockDim.y + threadIdx.y) * THREAD_COMPUTE;
     int COL = blockIdx.x * blockDim.x + threadIdx.x;
 
     // A = M X K
@@ -203,17 +203,28 @@ __global__ void gpu4_kernel(int M, int N, int K, double *A_d, double *B_d, doubl
     // C = M X N
 
     // read row of A
-    int i, j, t;
-    double sum_val = 0;
+    int t;
 
+    // NOTE: BLOCK_SIZE = M/2 or just BLOCK_SIZE > THREAD_COMPUTE^2
     for (t = 0; t < THREAD_COMPUTE; t++){
-        if ((ROW+t) < M && COL < N){
+        int i, j;
+        double sum_val = 0;
+        if ((ROW + t) < M && COL < N){
             for (i = 0; i < K; i++){
-            sum_val += A_d[(ROW + t) * K + i] * B_d[i * N + COL];
-        }
-        C_d[(ROW + t) * N + COL] = sum_val;
+                sum_val += A_d[(ROW + t) * K + i] * B_d[i * N + COL];
+            }
+            C_d[(ROW + t) * N + COL] = sum_val;
         }
     }
+
+    // for (t = THREAD_COMPUTE-1; t >= 0; t--){
+    //     if ((ROW + t) < M && COL < N){
+    //         for (i = 0; i < K; i++){
+    //             sum_val += A_d[(ROW + t) * K + i] * B_d[i * N + COL];
+    //         }
+    //         C_d[(ROW + t) * N + COL] = sum_val;
+    //     }
+    // }
 }
 
 extern "C" {
@@ -237,18 +248,18 @@ extern "C" {
         // initiate threads (how do we size them?)
         // Initialize number of blocks and threads
         // M / BLOCK_SIZE has to be greater than or equal to 1
-        int BLOCK_SIZE = 8;
+        int BLOCK_SIZE = 1;
         dim3 dimBlock(BLOCK_SIZE, BLOCK_SIZE);
         // int xSize = (N + dimBlock.x - 1) / dimBlock.x;
         // int ySize = (M + dimBlock.y - 1) / dimBlock.y;
 
         // which dimension to half
         // C: M X N
-        int xSize = N / dimBlock.x;
-        int ySize = M / dimBlock.y / 2;
+        int xSize = ceil((double) N / (double) dimBlock.x);
+        int ySize = ceil((double) M / (double) dimBlock.y / (double) THREAD_COMPUTE);
 
         dim3 dimGrid(xSize, ySize);
-        gpu3_kernel<<<dimGrid, dimBlock>>>(M, N , K, A_d, B_d, C_d);
+        gpu4_kernel<<<dimGrid, dimBlock>>>(M, N , K, A_d, B_d, C_d);
         cudaDeviceSynchronize();
 
         cudaMemcpy(C_h, C_d, C_size, cudaMemcpyDeviceToHost);
