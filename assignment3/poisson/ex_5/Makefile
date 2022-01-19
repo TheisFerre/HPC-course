@@ -1,5 +1,5 @@
 TARGET= example3d
-OBJS	= alloc3d.o alloc3d_gpu.o transfer3d_gpu.o example3d.o
+OBJS	= main.o alloc3d.o alloc3d_gpu.o transfer3d_gpu.o jacobi.o print.o
 
 OPT	= -g -O3
 ISA	= 
@@ -18,10 +18,8 @@ CFLAGS	= $(OPT) $(ISA) $(PARA) $(XOPT)
 CUDA_PATH ?= /appl/cuda/11.5.1
 INCLUDES = -I$(CUDA_PATH)/include -I$(CUDA_PATH)/samples/common/inc
 
-all: $(TARGET)
-
 $(TARGET): $(OBJS) 
-	$(CXX) $(CXXFLAGS) -o $@ $(OBJS) $(LIBS)
+	$(CXX) $(CXXFLAGS) -o $@ $(OBJS)
 
 .SUFFIXES: .cu
 .cu.o:
@@ -29,3 +27,10 @@ $(TARGET): $(OBJS)
 
 clean:
 	@/bin/rm -f *.o $(TARGET)
+
+main.o: main.cu jacobi.h alloc3d_gpu.h alloc3d.h transfer3d_gpu.h print.h
+alloc3d_gpu.o: alloc3d_gpu.cu
+alloc3d.o: alloc3d.cu
+transfer3d_gpu.o: transfer3d_gpu.cu
+jacobi: jacobi.cu
+print.o: print.cu
