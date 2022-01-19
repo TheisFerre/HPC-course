@@ -115,9 +115,7 @@ extern "C" {
 
 __global__ void gpu3_kernel(int M, int N, int K, double *A_d, double *B_d, double *C_d){
 
-    // int ROW1 = blockIdx.y * blockDim.y + threadIdx.y;
-    // int ROW2 = ROW1 + M/2;
-    int ROW1 = blockIdx.y * blockDim.y + threadIdx.y * 2;
+    int ROW1 = (blockIdx.y * blockDim.y + threadIdx.y) * 2;
     int ROW2 = ROW1 + 1;
     int COL = blockIdx.x * blockDim.x + threadIdx.x;
 
@@ -137,6 +135,14 @@ __global__ void gpu3_kernel(int M, int N, int K, double *A_d, double *B_d, doubl
         }
         C_d[ROW1 * N + COL] = sum_val1;
         C_d[ROW2 * N + COL] = sum_val2;
+    }
+
+    else if (ROW1 < M && COL < N){
+        for (i = 0; i < K; i++){
+            sum_val1 += A_d[ROW1 * K + i] * B_d[i * N + COL];
+        }
+        C_d[ROW1 * N + COL] = sum_val1;
+
     }
     
 
@@ -162,15 +168,15 @@ extern "C" {
         // initiate threads (how do we size them?)
         // Initialize number of blocks and threads
         // M / BLOCK_SIZE has to be greater than or equal to 1
-        int BLOCK_SIZE = 2;
+        int BLOCK_SIZE = 4;
         dim3 dimBlock(BLOCK_SIZE, BLOCK_SIZE);
         // int xSize = (N + dimBlock.x - 1) / dimBlock.x;
         // int ySize = (M + dimBlock.y - 1) / dimBlock.y;
 
         // which dimension to half
         // C: M X N
-        int xSize = N / dimBlock.x;
-        int ySize = M / dimBlock.y / 2;
+        int xSize = ceil((double)N / (double)dimBlock.x);
+        int ySize = ceil((double)M / (double)dimBlock.y / 2.0);
 
         dim3 dimGrid(xSize, ySize);
         gpu3_kernel<<<dimGrid, dimBlock>>>(M, N , K, A_d, B_d, C_d);
@@ -188,8 +194,8 @@ extern "C" {
 
 __global__ void gpu4_kernel(int M, int N, int K, double *A_d, double *B_d, double *C_d){
 
-    int ROW1 = blockIdx.y * blockDim.y + threadIdx.y;
-    int ROW2 = ROW1 + M/2;
+    int ROW1 = (blockIdx.y * blockDim.y + threadIdx.y) * 2;
+    int ROW2 = ROW1 + 1;
     int COL = blockIdx.x * blockDim.x + threadIdx.x;
 
     // A = M X K
@@ -209,7 +215,14 @@ __global__ void gpu4_kernel(int M, int N, int K, double *A_d, double *B_d, doubl
         C_d[ROW1 * N + COL] = sum_val1;
         C_d[ROW2 * N + COL] = sum_val2;
     }
-    
+
+    else if (ROW1 < M && COL < N){
+        for (i = 0; i < K; i++){
+            sum_val1 += A_d[ROW1 * K + i] * B_d[i * N + COL];
+        }
+        C_d[ROW1 * N + COL] = sum_val1;
+
+    }
 
 }
 extern "C" {
