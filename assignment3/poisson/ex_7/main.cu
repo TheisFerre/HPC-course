@@ -154,16 +154,24 @@ main(int argc, char *argv[]) {
     transfer_3d_from_1d(f_d1, f_h[0][0]+(nElms/2), (N+2)/2, N+2, N+2, cudaMemcpyHostToDevice);
 
 
-    double*** temp = NULL;
+    double*** temp_d0 = NULL;
+    double*** temp_d1 = NULL;
     dim3 dimGrid(ceil(N/8.0),ceil(N/8.0),ceil(N/8.0));
     dim3 dimBlock(8,8,8);
     /////////////////////////////////  COMPUTE ///////////////////////////////
     for (int k=0; k<iter_max;k++){
-        jacobi<<<dimGrid, dimBlock>>>(N,u_new_d,u_old_d,f_d);
+        cudaSetDevice(0);
+        jacobi<<<dimGrid, dimBlock>>>(N,u_new_d0_d,u_old_d0,u_old_d1,f_d0);
+        cudaSetDevice(1);
+        jacobi<<<dimGrid, dimBlock>>>(N,u_new_d1,u_old_d1,u_old_d0,f_d1);
         checkCudaErrors(cudaDeviceSynchronize());
-        temp = u_old_d;
-        u_old_d = u_new_d;
-        u_new_d = temp;
+        temp_d0 = u_old_d0; /* Swap pointers for d0*/
+        u_old_d0 = u_new_d0;
+        u_new_d0 = temp_d0;
+
+        temp_d1 = u_old_d1; /* Swap pointers for d1*/
+        u_old_d1 = u_new_d1;
+        u_new_d1 = temp_d1;
     }
 
 
