@@ -115,16 +115,16 @@ main(int argc, char *argv[]) {
     double  ***u_old_d0 = NULL;
     double  ***u_new_d0 = NULL; 
     double  ***f_d0 = NULL;
-    if ( (u_old_d0 = d_malloc_3d_gpu((N+2)/2, (N+2)/2, (N+2)/2)) == NULL ) {
+    if ( (u_old_d0 = d_malloc_3d_gpu((N+2)/2, (N+2), (N+2))) == NULL ) {
         perror("array u_old_d0: allocation failed");
         exit(-1);
     }
-    if ( (u_new_d0 = d_malloc_3d_gpu((N+2)/2, (N+2)/2, (N+2)/2)) == NULL ) {
+    if ( (u_new_d0 = d_malloc_3d_gpu((N+2)/2, (N+2), (N+2))) == NULL ) {
         perror("array u_new_d0: allocation failed");
         exit(-1);
     }
 
-    if ( (f_d0 = d_malloc_3d_gpu((N+2)/2, (N+2)/2, (N+2)/2)) == NULL ) {
+    if ( (f_d0 = d_malloc_3d_gpu((N+2)/2, (N+2), (N+2))) == NULL ) {
         perror("array f_d0: allocation failed");
         exit(-1);
     }
@@ -133,16 +133,16 @@ main(int argc, char *argv[]) {
     double  ***u_old_d1 = NULL;
     double  ***u_new_d1 = NULL; 
     double  ***f_d1 = NULL;
-    if ( (u_old_d1 = d_malloc_3d_gpu((N+2)/2, (N+2)/2, (N+2)/2)) == NULL ) {
+    if ( (u_old_d1 = d_malloc_3d_gpu((N+2)/2, (N+2), (N+2))) == NULL ) {
         perror("array u_old_d1: allocation failed");
         exit(-1);
     }
-    if ( (u_new_d1 = d_malloc_3d_gpu((N+2)/2, (N+2)/2, (N+2)/2)) == NULL ) {
+    if ( (u_new_d1 = d_malloc_3d_gpu((N+2)/2, (N+2), (N+2))) == NULL ) {
         perror("array u_new_d1: allocation failed");
         exit(-1);
     }
 
-    if ( (f_d1 = d_malloc_3d_gpu((N+2)/2, (N+2)/2, (N+2)/2)) == NULL ) {
+    if ( (f_d1 = d_malloc_3d_gpu((N+2)/2, (N+2), (N+2))) == NULL ) {
         perror("array f_d1: allocation failed");
         exit(-1);
     }
@@ -156,14 +156,14 @@ main(int argc, char *argv[]) {
 
     double*** temp_d0 = NULL;
     double*** temp_d1 = NULL;
-    dim3 dimGrid(ceil(N/16.0),ceil(N/16.0),ceil(N/16.0));
+    dim3 dimGrid(ceil(N/8.0),ceil(N/8.0),ceil(N/16.0));
     dim3 dimBlock(8,8,8);
     /////////////////////////////////  COMPUTE ///////////////////////////////
     for (int k=0; k<iter_max;k++){
         cudaSetDevice(0);
-        jacobi_d0<<<dimGrid, dimBlock>>>(N/2,u_new_d0,u_old_d0,u_old_d1,f_d0);
+        jacobi_d0<<<dimGrid, dimBlock>>>(N,u_new_d0,u_old_d0,u_old_d1,f_d0);
         cudaSetDevice(1);
-        jacobi_d1<<<dimGrid, dimBlock>>>(N/2,u_new_d1,u_old_d1,u_old_d0,f_d1);
+        jacobi_d1<<<dimGrid, dimBlock>>>(N,u_new_d1,u_old_d1,u_old_d0,f_d1);
         checkCudaErrors(cudaDeviceSynchronize());
         cudaSetDevice(0);
         checkCudaErrors(cudaDeviceSynchronize());
