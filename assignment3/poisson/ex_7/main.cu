@@ -29,12 +29,7 @@ main(int argc, char *argv[]) {
     char        *output_ext    = "";
     char	output_filename[FILENAME_MAX];
     double 	***u_h = NULL;
-    double  ***u_old_d = NULL;
-    double  ***u_new_d = NULL; 
     double  ***f_h = NULL;
-    double  ***f_d = NULL;
-
-
 
     /* get the paramters from the command line */
     N = atoi(argv[1]);	// grid size
@@ -45,7 +40,7 @@ main(int argc, char *argv[]) {
 	output_type = atoi(argv[4]);  // ouput type
     }
 
-    /////////////////////  ALLOCATE MEMORY /////////////////////
+    /////////////////////  ALLOCATE HOST MEMORY /////////////////////
     // allocate host memory
     if ( (u_h = d_malloc_3d(N+2, N+2, N+2)) == NULL ) {
         perror("array u: allocation failed");
@@ -56,20 +51,6 @@ main(int argc, char *argv[]) {
         exit(-1);
     }
 
-    // allocate device memory
-    if ( (u_old_d = d_malloc_3d_gpu(N+2, N+2, N+2)) == NULL ) {
-        perror("array u: allocation failed");
-        exit(-1);
-    }
-        if ( (u_new_d = d_malloc_3d_gpu(N+2, N+2, N+2)) == NULL ) {
-        perror("array u: allocation failed");
-        exit(-1);
-    }
-
-    if ( (f_d = d_malloc_3d_gpu(N+2, N+2, N+2)) == NULL ) {
-        perror("array u: allocation failed");
-        exit(-1);
-    }
 
     /////////////////////  DATA INITIALISATION /////////////////////
     // /* Initialization of inner point in u*/
@@ -124,6 +105,25 @@ main(int argc, char *argv[]) {
                 }
             }
         }
+    }
+
+    /////////////////////  ALLOCATE DEVICE MEMORY /////////////////////
+    cudaSetDevice(0);
+    double  ***u_old_d0 = NULL;
+    double  ***u_new_d0 = NULL; 
+    double  ***f_d0 = NULL;
+    if ( (u_old_d0 = d_malloc_3d_gpu((N+2)/2, (N+2)/2, (N+2)/2)) == NULL ) {
+        perror("array u_old_d0: allocation failed");
+        exit(-1);
+    }
+    if ( (u_new_d0 = d_malloc_3d_gpu((N+2)/2, (N+2)/2, (N+2)/2)) == NULL ) {
+        perror("array u_new_d0: allocation failed");
+        exit(-1);
+    }
+
+    if ( (f_d0 = d_malloc_3d_gpu((N+2)/2, (N+2)/2, (N+2)/2)) == NULL ) {
+        perror("array f_d0: allocation failed");
+        exit(-1);
     }
 
     /////////////////////  COPY DATA FROM HOST TO DEVICE /////////////////////
