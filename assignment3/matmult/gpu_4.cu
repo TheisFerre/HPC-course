@@ -1,6 +1,7 @@
 
 #define THREAD_COMPUTE 4 // number of c elements a thread should compute
-__global__ void gpu4_kernel(int M, int N, int K, double *A_d, double *B_d, double *C_d){
+__global__ void gpu4_kernel(int M, int N, int K, double *A_d, double *B_d, double *C_d)
+{
 
     int ROW = (blockIdx.y * blockDim.y + threadIdx.y) * THREAD_COMPUTE;
     int COL = blockIdx.x * blockDim.x + threadIdx.x;
@@ -11,11 +12,14 @@ __global__ void gpu4_kernel(int M, int N, int K, double *A_d, double *B_d, doubl
 
     // TODO: split into if-else blocks
     int t;
-    for (t = 0; t < THREAD_COMPUTE; t++){
+    for (t = 0; t < THREAD_COMPUTE; t++)
+    {
         int i, j;
         double sum_val = 0;
-        if ((ROW + t) < M && COL < N){
-            for (i = 0; i < K; i++){
+        if ((ROW + t) < M && COL < N)
+        {
+            for (i = 0; i < K; i++)
+            {
                 sum_val += A_d[(ROW + t) * K + i] * B_d[i * N + COL];
             }
             C_d[(ROW + t) * N + COL] = sum_val;
@@ -23,8 +27,10 @@ __global__ void gpu4_kernel(int M, int N, int K, double *A_d, double *B_d, doubl
     }
 }
 
-extern "C" {
-    void matmult_gpu4(int M, int N, int K, double *A_h, double *B_h, double *C_h){
+extern "C"
+{
+    void matmult_gpu4(int M, int N, int K, double *A_h, double *B_h, double *C_h)
+    {
         double *A_d;
         double *B_d;
         double *C_d;
@@ -51,18 +57,16 @@ extern "C" {
 
         // which dimension to half
         // C: M X N
-        int xSize = ceil((double) N / (double) dimBlock.x);
-        int ySize = ceil((double) M / (double) dimBlock.y / (double) THREAD_COMPUTE);
+        int xSize = ceil((double)N / (double)dimBlock.x);
+        int ySize = ceil((double)M / (double)dimBlock.y / (double)THREAD_COMPUTE);
 
         dim3 dimGrid(xSize, ySize);
-        gpu4_kernel<<<dimGrid, dimBlock>>>(M, N , K, A_d, B_d, C_d);
+        gpu4_kernel<<<dimGrid, dimBlock>>>(M, N, K, A_d, B_d, C_d);
         cudaDeviceSynchronize();
 
         cudaMemcpy(C_h, C_d, C_size, cudaMemcpyDeviceToHost);
         cudaFree(A_d);
         cudaFree(B_d);
         cudaFree(C_d);
-        
     }
-
 }

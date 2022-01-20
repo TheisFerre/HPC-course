@@ -1,5 +1,6 @@
 
-__global__ void gpu3_kernel(int M, int N, int K, double *A_d, double *B_d, double *C_d){
+__global__ void gpu3_kernel(int M, int N, int K, double *A_d, double *B_d, double *C_d)
+{
 
     int ROW1 = (blockIdx.y * blockDim.y + threadIdx.y) * 2;
     int ROW2 = ROW1 + 1;
@@ -9,11 +10,13 @@ __global__ void gpu3_kernel(int M, int N, int K, double *A_d, double *B_d, doubl
     // B = K X N
     // C = M X N
 
-    if (ROW2 < M && COL < N) {
+    if (ROW2 < M && COL < N)
+    {
         int i, j;
         double sum_val1 = 0;
         double sum_val2 = 0;
-        for (i = 0; i < K; i++){
+        for (i = 0; i < K; i++)
+        {
             sum_val1 += A_d[ROW1 * K + i] * B_d[i * N + COL];
             sum_val2 += A_d[ROW2 * K + i] * B_d[i * N + COL];
         }
@@ -21,20 +24,21 @@ __global__ void gpu3_kernel(int M, int N, int K, double *A_d, double *B_d, doubl
         C_d[ROW2 * N + COL] = sum_val2;
     }
 
-    else if (ROW1 < M && COL < N){
+    else if (ROW1 < M && COL < N)
+    {
         int i, j;
         double sum_val1 = 0;
-        for (i = 0; i < K; i++){
+        for (i = 0; i < K; i++)
+        {
             sum_val1 += A_d[ROW1 * K + i] * B_d[i * N + COL];
         }
         C_d[ROW1 * N + COL] = sum_val1;
-
     }
-    
-
 }
-extern "C" {
-    void matmult_gpu3(int M, int N, int K, double *A_h, double *B_h, double *C_h){
+extern "C"
+{
+    void matmult_gpu3(int M, int N, int K, double *A_h, double *B_h, double *C_h)
+    {
         double *A_d;
         double *B_d;
         double *C_d;
@@ -65,14 +69,12 @@ extern "C" {
         int ySize = ceil((double)M / (double)dimBlock.y / 2.0);
 
         dim3 dimGrid(xSize, ySize);
-        gpu3_kernel<<<dimGrid, dimBlock>>>(M, N , K, A_d, B_d, C_d);
+        gpu3_kernel<<<dimGrid, dimBlock>>>(M, N, K, A_d, B_d, C_d);
         cudaDeviceSynchronize();
 
         cudaMemcpy(C_h, C_d, C_size, cudaMemcpyDeviceToHost);
         cudaFree(A_d);
         cudaFree(B_d);
         cudaFree(C_d);
-        
     }
-
 }

@@ -1,19 +1,24 @@
-__global__ void gpu1_kernel(int M,int N,int K, double *A_d, double *B_d, double *C_d){
+__global__ void gpu1_kernel(int M, int N, int K, double *A_d, double *B_d, double *C_d)
+{
 
     // single thread to compute all data
     int m, n, k;
 
-    for(m = 0; m < M; m++){
-        for(k = 0; k < K; k++){
-            for(n = 0; n < N; n++){
+    for (m = 0; m < M; m++)
+    {
+        for (k = 0; k < K; k++)
+        {
+            for (n = 0; n < N; n++)
+            {
                 C_d[m * N + n] += A_d[m * K + k] * B_d[k * N + n];
             }
         }
     }
-
 }
-extern "C" {
-    void matmult_gpu1(int M, int N, int K, double *A_h, double *B_h, double *C_h){
+extern "C"
+{
+    void matmult_gpu1(int M, int N, int K, double *A_h, double *B_h, double *C_h)
+    {
         double *A_d;
         double *B_d;
         double *C_d;
@@ -37,12 +42,12 @@ extern "C" {
 
         dim3 numOfThreadsPerBlock(BLOCK_SIZE, BLOCK_SIZE);
         dim3 numOfBlocks(BLOCK_SIZE, BLOCK_SIZE);
-        gpu1_kernel<<<numOfBlocks, numOfThreadsPerBlock>>>(M, N , K, A_d, B_d, C_d);
+        gpu1_kernel<<<numOfBlocks, numOfThreadsPerBlock>>>(M, N, K, A_d, B_d, C_d);
 
         cudaDeviceSynchronize();
         cudaMemcpy(C_h, C_d, C_size, cudaMemcpyDeviceToHost);
         cudaFree(A_d);
         cudaFree(B_d);
-        cudaFree(C_d); 
+        cudaFree(C_d);
     }
 }

@@ -1,5 +1,5 @@
 TARGET	= libmatmult.so
-LIBOBJS	= matmult.o gpu_1.o gpu_2.o gpu_3.o gpu_4.o gpu_5.o gpu_6.o
+LIBOBJS	= matmult.o gpu_1.o gpu_2.o gpu_3.o gpu_4.o gpu_5.o gpu_6.o gpulib.o
 
 OPT	  = -g -O3
 PIC   = -fpic
