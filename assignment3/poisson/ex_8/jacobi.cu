@@ -57,10 +57,10 @@ __global__ void jacobi(int N, double ***u_new,double ***u_old, double***f,double
     
     // *fbnorm=1.0;
     tmp=(u_new[z][y][x]-u_old[z][y][x])*(u_new[z][y][x]-u_old[z][y][x]);
+    
     tmp = blockReduceSum(tmp); 
-    if (threadIdx.x == 1 && threadIdx.y==1 && threadIdx.z==1) 
+    if (threadIdx.x == 0 && threadIdx.y==0 && threadIdx.z==0); 
         atomicAdd(fbnorm, tmp);
-        *fbnorm=sqrt(*fbnorm);
     //sum reduction in cuda sum Til én variable fbnorm 1 adresse, data race    
 }
 

@@ -133,26 +133,28 @@ main(int argc, char *argv[]) {
 
 
     double*** temp = NULL;
-    dim3 dimGrid(ceil(N/32.0),ceil(N/4.0),ceil(N/4.0));
-    dim3 dimBlock(32,4,4);
+    dim3 dimGrid(ceil(N/32.0),ceil(N/1),ceil(N/1));
+    dim3 dimBlock(32,1,1);
     double *fbnorm_h, *fbnorm_d;
-    double k=0;
+    int k=0;
     cudaMallocHost((void **) &fbnorm_h ,sizeof(double));
     cudaMalloc((void **) &fbnorm_d ,sizeof(double));
     *fbnorm_h=100;
+    cudaMemcpy(fbnorm_d,fbnorm_h,sizeof(double),cudaMemcpyHostToDevice);
     /////////////////////////////////  COMPUTE ///////////////////////////////
-    while (*fbnorm_h > tolerance && k < iter_max){
+    while (sqrt(*fbnorm_h) > tolerance && k < iter_max){
+        *fbnorm_h=0;
+        cudaMemcpy(fbnorm_d,fbnorm_h,sizeof(double),cudaMemcpyHostToHost);
         jacobi<<<dimGrid, dimBlock>>>(N,u_new_d,u_old_d,f_d,fbnorm_d);
         checkCudaErrors(cudaDeviceSynchronize());
         cudaMemcpy(fbnorm_h,fbnorm_d,sizeof(double),cudaMemcpyDeviceToHost);
         temp = u_old_d;
         u_old_d = u_new_d;
         u_new_d = temp;
-        printf("norm is:%f",*fbnorm_h);
         k++;
     }
-
-
+    printf("iterations were: %d",k);
+    printf("norm was: %f", sqrt(*fbnorm_h));
 
     /////////////////////  COPY DATA FROM DEVICE TO HOST /////////////////////
     transfer_3d(u_h, u_old_d, N+2, N+2, N+2, cudaMemcpyDeviceToHost);
