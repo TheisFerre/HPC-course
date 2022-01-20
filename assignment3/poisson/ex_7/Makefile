@@ -1,5 +1,5 @@
 TARGET= example3d
-OBJS	= main.o alloc3d.o alloc3d_gpu.o transfer3d_gpu.o jacobi.o print.o
+OBJS	= main.o jacobi.o alloc3d.o alloc3d_gpu.o transfer3d_gpu.o print.o
 
 OPT	= -g -O3
 ISA	= 
@@ -32,5 +32,5 @@ main.o: main.cu jacobi.h alloc3d_gpu.h alloc3d.h transfer3d_gpu.h print.h
 alloc3d_gpu.o: alloc3d_gpu.cu
 alloc3d.o: alloc3d.cu
 transfer3d_gpu.o: transfer3d_gpu.cu
-jacobi: jacobi.cu
+jacobi.o: jacobi.cu
 print.o: print.cu
