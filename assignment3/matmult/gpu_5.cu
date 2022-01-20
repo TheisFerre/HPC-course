@@ -1,7 +1,6 @@
 #include <helper_cuda.h>
-
-// Thread block size
-#define BLOCK_SIZE 4
+#include <stdio.h>
+#include <omp.h>
 
 // M(row, col) = *(M.elements + row * M.stride + col)
 typedef struct
@@ -13,14 +12,14 @@ typedef struct
 } Matrix;
 
 // Get a matrix element
-__device__ float GetElement(const Matrix A, int row, int col)
+__device__ double GetElement(const Matrix A, int row, int col)
 {
     return A.elements[row * A.stride + col];
 }
 
 // Set a matrix element
 __device__ void SetElement(Matrix A, int row, int col,
-                           float value)
+                           double value)
 {
     A.elements[row * A.stride + col] = value;
 }
@@ -49,7 +48,7 @@ __global__ void gpu5_kernel(Matrix A, Matrix B, Matrix C)
 
     // Each thread computes one element of Csub
     // by accumulating results into Cvalue
-    float Cvalue = 0;
+    double Cvalue = 0;
 
     // Thread row and column within Csub
     int row = threadIdx.y;
@@ -68,8 +67,8 @@ __global__ void gpu5_kernel(Matrix A, Matrix B, Matrix C)
         Matrix Bsub = GetSubMatrix(B, m, blockCol);
 
         // Shared memory used to store Asub and Bsub respectively
-        __shared__ float As[BLOCK_SIZE][BLOCK_SIZE];
-        __shared__ float Bs[BLOCK_SIZE][BLOCK_SIZE];
+        __shared__ double As[BLOCK_SIZE][BLOCK_SIZE];
+        __shared__ double Bs[BLOCK_SIZE][BLOCK_SIZE];
 
         // Load Asub and Bsub from device memory to shared memory
         // Each thread loads one element of each sub-matrix
@@ -113,22 +112,29 @@ extern "C"
         C.height = M;
         C.elements = C_h;
 
+        double time, elapsed;
+        double transfer_time, transfer_elabsed;
+
         // Load A and B to device memory
         Matrix d_A;
         d_A.width = d_A.stride = A.width;
         d_A.height = A.height;
         size_t size = A.width * A.height * sizeof(double);
         cudaMalloc(&d_A.elements, size);
-        cudaMemcpy(d_A.elements, A.elements, size,
-                   cudaMemcpyHostToDevice);
 
         Matrix d_B;
         d_B.width = d_B.stride = B.width;
         d_B.height = B.height;
         size = B.width * B.height * sizeof(double);
         cudaMalloc(&d_B.elements, size);
+        
+
+        transfer_time = omp_get_wtime();
+        cudaMemcpy(d_A.elements, A.elements, size,
+                   cudaMemcpyHostToDevice);
         cudaMemcpy(d_B.elements, B.elements, size,
                    cudaMemcpyHostToDevice);
+        transfer_elabsed = omp_get_wtime() - transfer_time;
 
         // Allocate C in device memory
         Matrix d_C;
@@ -138,11 +144,21 @@ extern "C"
         cudaMalloc(&d_C.elements, size);
 
         // Invoke kernel
-        dim3 dimBlock(BLOCK_SIZE, BLOCK_SIZE);
-        dim3 dimGrid(B.width / dimBlock.x, A.height / dimBlock.y);
-        gpu5_kernel<<<dimGrid, dimBlock>>>(d_A, d_B, d_C);
+        dim3 THREADS_BLOCK(BLOCK_SIZE, BLOCK_SIZE);
+        int xSize = (N + BLOCK_SIZE - 1) / THREADS_BLOCK.x;
+        int ySize = (M + BLOCK_SIZE - 1) / THREADS_BLOCK.y;
+        dim3 GRIDSIZE(xSize, ySize);
+        
+        time = omp_get_wtime();
+ 
+        gpu5_kernel<<<GRIDSIZE, THREADS_BLOCK>>>(d_A, d_B, d_C);
+        checkCudaErrors(cudaDeviceSynchronize()); 
+        
+        elapsed = omp_get_wtime() - time;
 
-        checkCudaErrors(cudaDeviceSynchronize());
+        //printf("Kernel_time\t");
+        //printf("Transfer_time\n");
+        printf("%f\t%f\n", elapsed, transfer_elabsed);
 
         // Read C from device memory
         cudaMemcpy(C.elements, d_C.elements, size,
