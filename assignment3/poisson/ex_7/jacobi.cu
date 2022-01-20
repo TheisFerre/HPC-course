@@ -51,7 +51,7 @@ __global__ void jacobi_d1(int N, double ***u_new,double ***u_old, double ***u_ot
     x=blockIdx.x*blockDim.x+threadIdx.x+1;
     y=blockIdx.y*blockDim.y+threadIdx.y+1;
     z=blockIdx.z*blockDim.z+threadIdx.z;
-    if (x>=(N+1) || y>=(N+1) || z>=(N/2+1))return;
+    if (x>=(N+1) || y>=(N+1) || z>=(N/2))return;
 
     //perform Jacobi iterations
     if (z==0){
