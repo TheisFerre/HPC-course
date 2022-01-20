@@ -153,8 +153,8 @@ main(int argc, char *argv[]) {
         u_new_d = temp;
         k++;
     }
-    printf("iterations were: %d",k);
-    printf("norm was: %f", sqrt(*fbnorm_h));
+    printf("\nTotal number of iterations are: %d\n",k);
+    printf("Norm is: %.3f\n\n", sqrt(*fbnorm_h));
 
     /////////////////////  COPY DATA FROM DEVICE TO HOST /////////////////////
     transfer_3d(u_h, u_old_d, N+2, N+2, N+2, cudaMemcpyDeviceToHost);
