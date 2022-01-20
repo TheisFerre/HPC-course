@@ -40,7 +40,7 @@ main(int argc, char *argv[]) {
 	output_type = atoi(argv[4]);  // ouput type
     }
 
-    long nElms = N * N * N;
+    long nElms = (N+2) * (N+2) * (N+2);
 
     /////////////////////  ALLOCATE HOST MEMORY /////////////////////
     // allocate host memory
@@ -156,14 +156,14 @@ main(int argc, char *argv[]) {
 
     double*** temp_d0 = NULL;
     double*** temp_d1 = NULL;
-    dim3 dimGrid(ceil(N/8.0),ceil(N/8.0),ceil(N/8.0));
+    dim3 dimGrid(ceil(N/16.0),ceil(N/16.0),ceil(N/16.0));
     dim3 dimBlock(8,8,8);
     /////////////////////////////////  COMPUTE ///////////////////////////////
     for (int k=0; k<iter_max;k++){
         cudaSetDevice(0);
-        jacobi_d0<<<dimGrid, dimBlock>>>(N,u_new_d0_d,u_old_d0,u_old_d1,f_d0);
+        jacobi_d0<<<dimGrid, dimBlock>>>(N/2,u_new_d0,u_old_d0,u_old_d1,f_d0);
         cudaSetDevice(1);
-        jacobi_d1<<<dimGrid, dimBlock>>>(N,u_new_d1,u_old_d1,u_old_d0,f_d1);
+        jacobi_d1<<<dimGrid, dimBlock>>>(N/2,u_new_d1,u_old_d1,u_old_d0,f_d1);
         checkCudaErrors(cudaDeviceSynchronize());
         cudaSetDevice(0);
         checkCudaErrors(cudaDeviceSynchronize());
@@ -179,8 +179,8 @@ main(int argc, char *argv[]) {
 
 
     /////////////////////  COPY DATA FROM DEVICE TO HOST /////////////////////
-    transfer_3d(u_h, u_old_d, N+2, N+2, N+2, cudaMemcpyDeviceToHost);
-
+    transfer_3d_to_1d(u_h[0][0], u_old_d0, (N+2)/2, N+2, N+2, cudaMemcpyDeviceToHost);
+    transfer_3d_to_1d(u_h[0][0]+(nElms/2),u_old_d1, (N+2)/2, N+2, N+2, cudaMemcpyDeviceToHost);
 
 
     // dump  results if wanted 
@@ -209,9 +209,9 @@ main(int argc, char *argv[]) {
     ///////////////////////////     CLEAN UP    //////////////////////////////
     free(u_h);
     free(f_h);
-    free_gpu(u_old_d);
-    free_gpu(u_new_d);
-    free_gpu(f_d);
+    free_gpu(u_old_d0);
+    free_gpu(u_new_d0);
+    free_gpu(f_d0);
 
     return(0);
 }
