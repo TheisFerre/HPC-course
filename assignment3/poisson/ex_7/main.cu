@@ -161,9 +161,11 @@ main(int argc, char *argv[]) {
     /////////////////////////////////  COMPUTE ///////////////////////////////
     for (int k=0; k<iter_max;k++){
         cudaSetDevice(0);
-        jacobi<<<dimGrid, dimBlock>>>(N,u_new_d0_d,u_old_d0,u_old_d1,f_d0);
+        jacobi_d0<<<dimGrid, dimBlock>>>(N,u_new_d0_d,u_old_d0,u_old_d1,f_d0);
         cudaSetDevice(1);
-        jacobi<<<dimGrid, dimBlock>>>(N,u_new_d1,u_old_d1,u_old_d0,f_d1);
+        jacobi_d1<<<dimGrid, dimBlock>>>(N,u_new_d1,u_old_d1,u_old_d0,f_d1);
+        checkCudaErrors(cudaDeviceSynchronize());
+        cudaSetDevice(0);
         checkCudaErrors(cudaDeviceSynchronize());
         temp_d0 = u_old_d0; /* Swap pointers for d0*/
         u_old_d0 = u_new_d0;
