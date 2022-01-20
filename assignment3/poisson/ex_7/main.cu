@@ -40,6 +40,8 @@ main(int argc, char *argv[]) {
 	output_type = atoi(argv[4]);  // ouput type
     }
 
+    long nElms = N * N * N;
+
     /////////////////////  ALLOCATE HOST MEMORY /////////////////////
     // allocate host memory
     if ( (u_h = d_malloc_3d(N+2, N+2, N+2)) == NULL ) {
@@ -109,6 +111,7 @@ main(int argc, char *argv[]) {
 
     /////////////////////  ALLOCATE DEVICE MEMORY /////////////////////
     cudaSetDevice(0);
+    cudaDeviceEnablePeerAccess(1, 0); /* Device 0 can access device 1*/
     double  ***u_old_d0 = NULL;
     double  ***u_new_d0 = NULL; 
     double  ***f_d0 = NULL;
@@ -125,11 +128,30 @@ main(int argc, char *argv[]) {
         perror("array f_d0: allocation failed");
         exit(-1);
     }
+    cudaSetDevice(1);
+    cudaDeviceEnablePeerAccess(0, 0); /* Device 1 can access device 0*/
+    double  ***u_old_d1 = NULL;
+    double  ***u_new_d1 = NULL; 
+    double  ***f_d1 = NULL;
+    if ( (u_old_d1 = d_malloc_3d_gpu((N+2)/2, (N+2)/2, (N+2)/2)) == NULL ) {
+        perror("array u_old_d1: allocation failed");
+        exit(-1);
+    }
+    if ( (u_new_d1 = d_malloc_3d_gpu((N+2)/2, (N+2)/2, (N+2)/2)) == NULL ) {
+        perror("array u_new_d1: allocation failed");
+        exit(-1);
+    }
+
+    if ( (f_d1 = d_malloc_3d_gpu((N+2)/2, (N+2)/2, (N+2)/2)) == NULL ) {
+        perror("array f_d1: allocation failed");
+        exit(-1);
+    }
 
     /////////////////////  COPY DATA FROM HOST TO DEVICE /////////////////////
-    transfer_3d(u_new_d, u_h, N+2, N+2, N+2, cudaMemcpyHostToDevice);
-    transfer_3d(u_old_d, u_h, N+2, N+2, N+2, cudaMemcpyHostToDevice);
-    transfer_3d(f_d, f_h, N+2, N+2, N+2, cudaMemcpyHostToDevice);
+    transfer_3d_from_1d(u_old_d0, u_h[0][0], (N+2)/2, N+2, N+2, cudaMemcpyHostToDevice);
+    transfer_3d_from_1d(u_old_d1, u_h[0][0]+(nElms/2), (N+2)/2, N+2, N+2, cudaMemcpyHostToDevice);
+    transfer_3d_from_1d(f_d0, f_h[0][0], (N+2)/2, N+2, N+2, cudaMemcpyHostToDevice);
+    transfer_3d_from_1d(f_d1, f_h[0][0]+(nElms/2), (N+2)/2, N+2, N+2, cudaMemcpyHostToDevice);
 
 
     double*** temp = NULL;
