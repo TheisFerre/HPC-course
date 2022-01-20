@@ -40,11 +40,7 @@ __global__ void jacobi_d0(int N, double ***u_new,double ***u_old,double ***u_oth
     }
 }
 
-<<<<<<< HEAD
-__global__ void jacobi_d1(int N, double ***u_new,double ***u_old,double ***u_other_dev, double***f) {
-=======
 __global__ void jacobi_d1(int N, double ***u_new,double ***u_old, double ***u_other_dev, double***f) {
->>>>>>> bcf7b0a960b19ec6204fde6ef0775a7a39251f40
     double delta;
     double delta_sq;
     delta = 2.0/(N + 1.0);
