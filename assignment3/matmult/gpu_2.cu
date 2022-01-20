@@ -1,4 +1,5 @@
-__global__ void gpu2_kernel(int M, int N, int K, double *A_d, double *B_d, double *C_d){
+__global__ void gpu2_kernel(int M, int N, int K, double *A_d, double *B_d, double *C_d)
+{
 
     int ROW = blockIdx.y * blockDim.y + threadIdx.y;
     int COL = blockIdx.x * blockDim.x + threadIdx.x;
@@ -7,19 +8,21 @@ __global__ void gpu2_kernel(int M, int N, int K, double *A_d, double *B_d, doubl
     // B = K X N
     // C = M X N
 
-    if (ROW < M && COL < N) {
+    if (ROW < M && COL < N)
+    {
         int i, j;
         double sum_val = 0;
-        for (i = 0; i < K; i++){
+        for (i = 0; i < K; i++)
+        {
             sum_val += A_d[ROW * K + i] * B_d[i * N + COL];
         }
         C_d[ROW * N + COL] = sum_val;
     }
-    
-
 }
-extern "C" {
-    void matmult_gpu2(int M, int N, int K, double *A_h, double *B_h, double *C_h){
+extern "C"
+{
+    void matmult_gpu2(int M, int N, int K, double *A_h, double *B_h, double *C_h)
+    {
         double *A_d;
         double *B_d;
         double *C_d;
@@ -44,14 +47,12 @@ extern "C" {
         int ySize = ceil((double)(M + numOfThreadsPerBlock.y - 1) / (double)numOfThreadsPerBlock.y);
         dim3 numOfBlocks(xSize, ySize);
 
-        gpu2_kernel<<<numOfThreadsPerBlock, numOfBlocks>>>(M, N , K, A_d, B_d, C_d);
+        gpu2_kernel<<<numOfThreadsPerBlock, numOfBlocks>>>(M, N, K, A_d, B_d, C_d);
 
         cudaDeviceSynchronize();
         cudaMemcpy(C_h, C_d, C_size, cudaMemcpyDeviceToHost);
         cudaFree(A_d);
         cudaFree(B_d);
         cudaFree(C_d);
-        
     }
-
 }
