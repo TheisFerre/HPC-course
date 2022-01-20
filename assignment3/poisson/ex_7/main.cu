@@ -150,6 +150,9 @@ main(int argc, char *argv[]) {
     /////////////////////  COPY DATA FROM HOST TO DEVICE /////////////////////
     transfer_3d_from_1d(u_old_d0, u_h[0][0], (N+2)/2, N+2, N+2, cudaMemcpyHostToDevice);
     transfer_3d_from_1d(u_old_d1, u_h[0][0]+(nElms/2), (N+2)/2, N+2, N+2, cudaMemcpyHostToDevice);
+    transfer_3d(u_new_d0,u_old_d0,(N+2)/2,N+2,N+2,cudaMemcpyDeviceToDevice);
+    transfer_3d(u_new_d1,u_old_d1,(N+2)/2,N+2,N+2,cudaMemcpyDeviceToDevice);
+
     transfer_3d_from_1d(f_d0, f_h[0][0], (N+2)/2, N+2, N+2, cudaMemcpyHostToDevice);
     transfer_3d_from_1d(f_d1, f_h[0][0]+(nElms/2), (N+2)/2, N+2, N+2, cudaMemcpyHostToDevice);
 
