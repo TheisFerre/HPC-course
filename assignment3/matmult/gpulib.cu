@@ -60,7 +60,8 @@ void matmult_gpulib(int M, int N, int K, double *A_h, double *B_h, double *C_h)
 
     // call cblas library
     // cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, M, N, K, 1.0, A, lda, B, ldb, 0.0, C, ldc);
-    cublasDgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N, M, N, K, alpha, A_d, lda, B_d, ldb, beta, C_d, ldc);
+    // switch A and B. RowMajor --> ColumnMajor
+    cublasDgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N, N, M, K, alpha, B_d, ldb, A_d, lda, beta, C_d, ldc);
 
     // destroy handle
     cublasDestroy(handle);

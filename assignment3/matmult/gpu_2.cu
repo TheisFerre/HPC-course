@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <omp.h>
+#include <helper_cuda.h>
 __global__ void gpu2_kernel(int M, int N, int K, double *A_d, double *B_d, double *C_d)
 {
 
@@ -8,6 +11,8 @@ __global__ void gpu2_kernel(int M, int N, int K, double *A_d, double *B_d, doubl
     // B = K X N
     // C = M X N
 
+    // int k;
+    // for (k=0; k<)
     if (ROW < M && COL < N)
     {
         int i, j;
@@ -20,12 +25,15 @@ __global__ void gpu2_kernel(int M, int N, int K, double *A_d, double *B_d, doubl
     }
 }
 extern "C"
-{
+{   
     void matmult_gpu2(int M, int N, int K, double *A_h, double *B_h, double *C_h)
     {
         double *A_d;
         double *B_d;
         double *C_d;
+
+        double time, elapsed;
+        double transfer_time, transfer_elabsed;
 
         int A_size = M * K * sizeof(double);
         int B_size = K * N * sizeof(double);
@@ -36,20 +44,29 @@ extern "C"
         cudaMalloc((void **)&C_d, C_size);
 
         // transfer data to cuda
+        transfer_time = omp_get_wtime();
         cudaMemcpy(A_d, A_h, A_size, cudaMemcpyHostToDevice);
         cudaMemcpy(B_d, B_h, B_size, cudaMemcpyHostToDevice);
+        transfer_elabsed = omp_get_wtime() - transfer_time;
 
         // initiate threads (how do we size them?)
         // Initialize number of blocks and threads
-        int BLOCK_SIZE = 16;
-        dim3 numOfThreadsPerBlock(BLOCK_SIZE, BLOCK_SIZE);
-        int xSize = ceil((double)(N + numOfThreadsPerBlock.x - 1) / (double)numOfThreadsPerBlock.x);
-        int ySize = ceil((double)(M + numOfThreadsPerBlock.y - 1) / (double)numOfThreadsPerBlock.y);
-        dim3 numOfBlocks(xSize, ySize);
+        dim3 THREADS_BLOCK(BLOCK_SIZE, BLOCK_SIZE);
+        int xSize = (N + BLOCK_SIZE - 1) / THREADS_BLOCK.x;
+        int ySize = (M + BLOCK_SIZE - 1) / THREADS_BLOCK.y;
+        dim3 GRIDSIZE(xSize, ySize);
 
-        gpu2_kernel<<<numOfThreadsPerBlock, numOfBlocks>>>(M, N, K, A_d, B_d, C_d);
+        time = omp_get_wtime();
+ 
+        gpu2_kernel<<<GRIDSIZE, THREADS_BLOCK>>>(M, N, K, A_d, B_d, C_d);
+        checkCudaErrors(cudaDeviceSynchronize()); 
+        
+        elapsed = omp_get_wtime() - time;
 
-        cudaDeviceSynchronize();
+        //printf("Kernel_time\t");
+        //printf("Transfer_time\n");
+        printf("%f\t%f\n", elapsed, transfer_elabsed);
+
         cudaMemcpy(C_h, C_d, C_size, cudaMemcpyDeviceToHost);
         cudaFree(A_d);
         cudaFree(B_d);

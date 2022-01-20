@@ -4,12 +4,13 @@ LIBOBJS	= matmult.o gpu_1.o gpu_2.o gpu_3.o gpu_4.o gpu_5.o gpu_6.o gpulib.o
 OPT	  = -g -O3
 PIC   = -fpic
 OMP   = -fopenmp
+DEFS  = -DBLOCK_SIZE=32 -DTHREAD_COMPUTE=${ARG} ##4
 XPIC  = -Xcompiler -fpic
 XOPT  = -Xptxas=-v -lineinfo #-G # only use -G for debugging / profiler
 XARCH = -arch=sm_80
 
 CXX	= nvcc
-CXXFLAGS = --compiler-options "$(OPT) $(PIC) $(OMP)" $(XARCH) $(XOPT) $(XPIC)
+CXXFLAGS = --compiler-options "$(DEFS) $(OPT) $(PIC) $(OMP)" $(XARCH) $(XOPT) $(XPIC)
 
 CUDA_PATH ?= /appl/cuda/11.5.1
 INCLUDES = -I$(CUDA_PATH)/include \
