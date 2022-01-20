@@ -6,6 +6,7 @@
 #ifndef _JACOBI_H
 #define _JACOBI_H
 
-__global__ void jacobi(int N, double ***u_new,double ***u_old, double***f);
+__global__ void jacobi_d0(int N, double ***u_new,double ***u_old,double ***u_other_dev, double***f);
+__global__ void jacobi_d1(int N, double ***u_new,double ***u_old,double ***u_other_dev, double***f);
 
 #endif
