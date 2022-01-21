@@ -24,7 +24,7 @@ for file in sorted(candidates, key=lambda x:int(re.findall("(\d+)",x)[0])):
 # KernelElapsed plot
 fig, axs = plt.subplots(figsize=(12, 4))
 
-results = {"GPU2":[], "GPU3":[], "GPU4":[], "GPU5":[], "CPU":[]}
+results = {"GPU2":[], "GPU3":[], "GPU4":[], "GPU5":[], "GPULIB": [], "CPU":[]}
 c = 0
 for df in dfs:
     l = []
@@ -34,6 +34,8 @@ for df in dfs:
         i += 1
 
 for key, val in results.items():
+    if key == "GPULIB":
+        continue
     plt.plot(sizes,results[key],marker="o",label=key)
 
 plt.legend()
