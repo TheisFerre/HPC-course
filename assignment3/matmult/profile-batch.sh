@@ -7,11 +7,12 @@
 #BSUB -R "rusage[mem=2048]"  
  
 module load cuda/11.5.1
-GPU_VERSION=gpulib
+
 export TMPDIR=$__LSF_JOB_TMPDIR__
+export MFLOPS_MAX_IT=1
+
 SIZE=2048
- 
-export MFLOPS_MAX_IT=1  
+GPU_VERSION=5
  
 nv-nsight-cu-cli -o profile_$GPU_VERSION \ 
     --section MemoryWorkloadAnalysis \ 
