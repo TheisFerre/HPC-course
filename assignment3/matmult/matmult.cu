@@ -41,6 +41,7 @@ extern "C" {
         // call cblas library
         cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, M, N, K, 1.0, A, lda, B, ldb, 0.0, C, ldc);
         elapsed = omp_get_wtime() - time;
+        printf("%f\n", elapsed);
     }
 
     void matmult_mkn(int M, int N, int K, double *A, double *B, double *C) {

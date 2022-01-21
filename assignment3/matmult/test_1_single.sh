@@ -18,6 +18,7 @@ MATRIX_SIZES="8 16 32 64 128"
 
 export MATMULT_RESULT=0
 export MATMULT_COMPARE=0
+export MFLOPS_MAX_IT=100
 
 # using all threads
 #MKL_NUM_THREADS=16 numactl --cpunodebind=0
