@@ -24,7 +24,7 @@ for file in sorted(candidates, key=lambda x:int(re.findall("(\d+)",x)[0])):
 # KernelElapsed plot
 fig, axs = plt.subplots(figsize=(12, 4))
 
-results = {"GPU2":[], "GPU3":[], "GPU4":[], "GPU5":[], "GPULIB":[], "CPU":[]}
+results = {"GPU2":[], "GPU3":[], "GPU4":[], "GPU5":[], "CPU":[]}
 c = 0
 for df in dfs:
     l = []
@@ -43,12 +43,12 @@ plt.ylabel("Avg. Kernel Elapsed time sec.")
 plt.xlabel("Matrix Size")
 plt.title("Kernel Runtime")
 plt.tight_layout()
-plt.savefig("Test_All_KernelElapsed.png")
+plt.savefig("Test_All_KernelElapsed_without_gpulib.png")
 
 # TransferElapsed plot
 fig, axs = plt.subplots(figsize=(12, 4))
 
-results = {"GPU2":[], "GPU3":[], "GPU4":[], "GPU5":[], "GPULIB":[]}
+results = {"GPU2":[], "GPU3":[], "GPU4":[], "GPU5":[]}
 c = 0
 for df in dfs:
     l = []
@@ -68,12 +68,12 @@ plt.ylabel("Avg. Transfer Elapsed time sec.")
 plt.xlabel("Matrix Size")
 plt.title("Transfer Runtime")
 plt.tight_layout()
-plt.savefig("Test_All_TransferElapsed.png")
+plt.savefig("Test_All_TransferElapsed_without_gpulib.png")
 
 # Transfer / Kernel Ratio
 fig, axs = plt.subplots(figsize=(12, 4))
 
-results = {"GPU2":[], "GPU3":[], "GPU4":[], "GPU5":[], "GPULIB":[]}
+results = {"GPU2":[], "GPU3":[], "GPU4":[], "GPU5":[]}
 c = 0
 for df in dfs:
     l = []
@@ -92,7 +92,7 @@ plt.ylabel("Ratio")
 plt.xlabel("Matrix Size")
 plt.title("Transfer / Kernel Ratio")
 plt.tight_layout()
-plt.savefig("Test_All_Ratio.png")
+plt.savefig("Test_All_Ratio_without_gpulib.png")
 
 # MegaFlops
 # fig, axs = plt.subplots(figsize=(12, 4))

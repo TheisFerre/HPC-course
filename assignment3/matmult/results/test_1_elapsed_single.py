@@ -1,15 +1,25 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
+import re
 from utils import load
 
 # get ready to plot
-dfs = []
-for file in os.listdir(os.getcwd()):
-    if file.startswith("test_1_single") and file.endswith(".txt"):
-        dfs.append(load(file))
+# dfs = []
+# for file in os.listdir(os.getcwd()):
+#     if file.startswith("test_1_single") and file.endswith(".txt"):
+#         dfs.append(load(file))
 
 sizes = ["8", "16", "32", "64", "128"]
+
+candidates = []
+for file in os.listdir(os.getcwd()):
+    if file.startswith("test_1_single") and file.endswith(".txt"):
+        candidates.append(file)
+dfs = []
+for file in sorted(candidates, key=lambda x:int(re.findall("(\d+)",x)[1])):
+    print(file)
+    dfs.append(load(file))
 
 # KernelElapsed plot
 fig, axs = plt.subplots(figsize=(12, 4))
@@ -64,25 +74,25 @@ plt.tight_layout()
 plt.savefig("Test_1_Ratio_Single.png")
 
 # MegaFlops
-fig, axs = plt.subplots(figsize=(12, 4))
+# fig, axs = plt.subplots(figsize=(12, 4))
 
-results = {"GPU1":[], "CPU":[]}
-c = 0
-for df in dfs:
-    l = []
-    i = 0
-    for key, val in results.items():
-        results[key].append(df.at[i,'MegaFlops'])
-        i += 1
+# results = {"GPU1":[], "CPU":[]}
+# c = 0
+# for df in dfs:
+#     l = []
+#     i = 0
+#     for key, val in results.items():
+#         results[key].append(df.at[i,'MegaFlops'])
+#         i += 1
 
-for key, val in results.items():
-    plt.plot(sizes,results[key],marker="o",label=key)
+# for key, val in results.items():
+#     plt.plot(sizes,results[key],marker="o",label=key)
 
-plt.legend()
-plt.grid()
-# plt.yscale('log')
-plt.ylabel("MFlops/s")
-plt.xlabel("Matrix Size")
-plt.title("MFlops Performance")
-plt.tight_layout()
-plt.savefig("Test_1_MegaFlops_single.png")
+# plt.legend()
+# plt.grid()
+# # plt.yscale('log')
+# plt.ylabel("MFlops/s")
+# plt.xlabel("Matrix Size")
+# plt.title("MFlops Performance")
+# plt.tight_layout()
+# plt.savefig("Test_1_MegaFlops_single.png")

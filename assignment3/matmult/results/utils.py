@@ -5,12 +5,14 @@ def load(filename):
 
     # read stuff
     num = 1
+    megaflops = []
     with open(filename, "r") as handle:
         for line in handle:
             if "#" in line:
                 df = pd.DataFrame(data, columns=["KernelElapsed", "TransferElapsed"])
                 df['Run'] = num
-                df['MegaFlops'] = line.split()[1]
+                megaflops.append(line.split()[1])
+                # df['MegaFlops'] = 
                 thread_dataframes[num] = df
                 data = []
                 num += 1
