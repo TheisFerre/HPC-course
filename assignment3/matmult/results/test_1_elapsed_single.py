@@ -1,35 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
-
-def load(filename):
-    data = []
-    thread_dataframes = {}
-
-    # read stuff
-    num = 1
-    with open(filename, "r") as handle:
-        for line in handle:
-            if "#" in line:
-                df = pd.DataFrame(data, columns=["KernelElapsed", "TransferElapsed"])
-                df['Run'] = num
-                thread_dataframes[num] = df
-                data = []
-                num += 1
-            else:
-                splitted = line.split()
-                if len(splitted) < 2:
-                    splitted = [splitted[0], None]
-                data.append(splitted)
-
-    # combine stuff
-    combined = pd.concat(thread_dataframes.values(), ignore_index=True)
-    combined = combined.apply(lambda col:pd.to_numeric(col, errors='coerce'))
-
-    # mean value fusion
-    result = combined.groupby('Run', axis=0, as_index=True, group_keys=True).mean().reset_index('Run')
-    result['Ratio'] = result['TransferElapsed'] / result['KernelElapsed']
-    return result
+from utils import load
 
 # get ready to plot
 dfs = []
@@ -90,3 +62,27 @@ plt.xlabel("Matrix Size")
 plt.title("Transfer / Kernel Ratio")
 plt.tight_layout()
 plt.savefig("Test_1_Ratio_Single.png")
+
+# MegaFlops
+fig, axs = plt.subplots(figsize=(12, 4))
+
+results = {"GPU1":[], "CPU":[]}
+c = 0
+for df in dfs:
+    l = []
+    i = 0
+    for key, val in results.items():
+        results[key].append(df.at[i,'MegaFlops'])
+        i += 1
+
+for key, val in results.items():
+    plt.plot(sizes,results[key],marker="o",label=key)
+
+plt.legend()
+plt.grid()
+# plt.yscale('log')
+plt.ylabel("MFlops/s")
+plt.xlabel("Matrix Size")
+plt.title("MFlops Performance")
+plt.tight_layout()
+plt.savefig("Test_1_MegaFlops_single.png")
